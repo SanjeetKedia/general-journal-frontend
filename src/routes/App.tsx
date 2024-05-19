@@ -1,12 +1,21 @@
-import { Link, Outlet } from "react-router-dom";
+import NavBar from "@/components/pageComponents/NavBar";
+import { Outlet } from "react-router-dom";
+
+const routes = [
+  {
+    route: "/journal",
+    text: "Journal",
+  },
+  {
+    route: "account",
+    text: "Account",
+  },
+];
 
 function App() {
   return (
     <div className="flex">
-      <nav className="flex flex-col">
-        <Link to={"/journal"}>Journal</Link>
-        <Link to={"/account"}>Account</Link>
-      </nav>
+      <NavBar routes={routes} />
       <Outlet />
     </div>
   );
