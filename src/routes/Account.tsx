@@ -1,8 +1,20 @@
 import SearchInput from "@/components/custom/SearchInput";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
-import { useState } from "react";
+import { ChangeEvent, PropsWithChildren, useState } from "react";
 
+// Types
 interface Account {
   id: number;
   name: string;
@@ -10,29 +22,151 @@ interface Account {
   description: string;
 }
 
+interface AccountFormType {
+  name: string;
+  type: string;
+  description: string;
+}
+
+// React Components
+const InputDiv = ({ children }: PropsWithChildren) => {
+  return (
+    <div className="grid w-full max-w-sm items-center gap-1.5">{children}</div>
+  );
+};
+
 const Account = () => {
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [accountFormData, setAccountFormData] = useState<AccountFormType>({
+    name: "",
+    type: "",
+    description: "",
+  });
 
+  // Handle Functions
+  // Temp
   const getAccounts = () => {
     axios
       .get<Account[]>("/api/account/getAccounts")
       .then((resp) => {
         setAccounts(resp.data);
-
-        console.log(resp.data);
+        return resp;
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  /////////////
+  const handleFormInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setAccountFormData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const handleSelectChange = (option: string) => {
+    setAccountFormData((prev) => {
+      return {
+        ...prev,
+        type: option,
+      };
+    });
+  };
+
+  const handleSaveNewAccount = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+
+    const accountNames = await axios<string[]>("/api/account/getAccountNames")
+      .then((resp) => {
+        return resp.data;
+      })
+      .catch((err) => {
+        alert(err);
+      });
+
+    if (!accountNames) {
+      return alert("ERROR");
+    }
+
+    if (accountNames.indexOf(accountFormData.name) !== -1) {
+      return alert(`The account name: ${accountFormData.name} already exists!`);
+    }
+
+    if (accountFormData.type == "") {
+      return alert("Choose an account type");
+    }
+
+    if (accountFormData.description == "") {
+      return alert("The description is empty");
+    }
+
+    axios.post("/api/account/makeAccount", accountFormData);
   };
 
   return (
-    <div className="flex flex-col">
-      <SearchInput />
-      <Button onClick={getAccounts}>Get Accounts</Button>
-      <ul>
-        {accounts.map((x) => (
-          <li key={x.id}>{x.name}</li>
-        ))}
-      </ul>
+    <div className="flex">
+      <div className="flex flex-col px-11 py-6 w-80">
+        <form className="w-full flex flex-col gap-5">
+          <InputDiv>
+            <Label className="text-lg" htmlFor="name">
+              Account Name
+            </Label>
+            <Input
+              className="w-full"
+              id="name"
+              name="name"
+              value={accountFormData.name}
+              onChange={handleFormInputChange}
+            />
+          </InputDiv>
+          <InputDiv>
+            <Label className="text-lg">Account Type</Label>
+            <Select
+              value={accountFormData.type}
+              onValueChange={handleSelectChange}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="asset">Asset</SelectItem>
+                <SelectItem value="liability">Liability</SelectItem>
+                <SelectItem value="capital">Capital</SelectItem>
+                <SelectItem value="income">Income</SelectItem>
+                <SelectItem value="expense">Expense</SelectItem>
+              </SelectContent>
+            </Select>
+          </InputDiv>
+          <InputDiv>
+            <Label className="text-lg">Description</Label>
+            <Textarea
+              placeholder="Account description"
+              name="description"
+              value={accountFormData.description}
+              onChange={handleFormInputChange}
+            />
+          </InputDiv>
+          <Button onClick={(e) => handleSaveNewAccount(e)}>Add Account</Button>
+        </form>
+      </div>
+      <Separator orientation="vertical" className="mx-20" />
+      <div className="flex flex-col">
+        <SearchInput />
+        <Button onClick={getAccounts}>Get Accounts</Button>
+        <ul>
+          {accounts.map((x) => (
+            <li key={x.id}>{x.name}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
