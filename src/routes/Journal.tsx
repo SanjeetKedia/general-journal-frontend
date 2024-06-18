@@ -4,7 +4,6 @@ import JournalEntry from "@/components/custom/JournalEntry";
 const Journal = () => {
   return (
     <div className="font-bold">
-      {/* <Button>Show Toast</Button> */}
       <JournalEntry />
     </div>
   );
