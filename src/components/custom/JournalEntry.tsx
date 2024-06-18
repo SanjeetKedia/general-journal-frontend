@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
 import { PropsWithChildren } from "react";
+import Td from "./JournalComponents/Td";
+import JournalEntryRow from "./JournalComponents/JournalEntryRow";
 
 const Th = ({
   children,
@@ -20,27 +22,6 @@ const Th = ({
   );
 };
 
-const Td = ({
-  children,
-  rowSpan,
-  className,
-  colSpan,
-}: PropsWithChildren<{
-  colSpan?: number;
-  rowSpan?: number;
-  className?: string;
-}>) => {
-  return (
-    <td
-      className={cn("border border-secondary px-2 py-2 font-thin", className)}
-      rowSpan={rowSpan}
-      colSpan={colSpan}
-    >
-      {children}
-    </td>
-  );
-};
-
 const JournalEntry = () => {
   return (
     <table>
@@ -50,22 +31,16 @@ const JournalEntry = () => {
           <Th className="w-64">Account</Th>
           <Th>Debit</Th>
           <Th>Credit</Th>
+          <Th>IsDebit</Th>
         </tr>
       </thead>
       <tbody>
+        {/* Journal Id No  */}
         <tr>
           <Td rowSpan={3} className="text-center"></Td>
         </tr>
-        <tr>
-          <Td>Cash Book</Td>
-          <Td className="text-right">500,000</Td>
-          <Td></Td>
-        </tr>
-        <tr>
-          <Td>Expense</Td>
-          <Td></Td>
-          <Td className="text-right">500,000</Td>
-        </tr>
+        <JournalEntryRow />
+        {/* <JournalEntryRow /> */}
       </tbody>
       <tfoot>
         <tr>
