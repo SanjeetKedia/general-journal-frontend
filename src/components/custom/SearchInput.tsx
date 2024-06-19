@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const SearchInput = ({
   value,

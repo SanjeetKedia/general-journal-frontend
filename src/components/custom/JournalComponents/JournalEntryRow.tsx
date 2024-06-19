@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import Td from "./Td";
 import AccountSelect from "./AccountSelect";
 import { Toggle } from "@/components/ui/toggle";
@@ -81,7 +81,7 @@ const JournalEntryRow = ({
         <Toggle
           pressed={data.isDebit}
           onPressedChange={handleToggleChange}
-          className="w-full h-full absolute inset-0 text-black data-[state='on']:bg-primary"
+          className="w-full h-full absolute inset-0 text-black data-[state='on']:bg-gradient-to-br from-primary to-secondary"
         />
       </Td>
     </tr>
