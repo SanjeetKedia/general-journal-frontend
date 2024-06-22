@@ -1,85 +1,51 @@
-import { cn } from "@/lib/utils";
 import Td from "./JournalComponents/Td";
 import JournalEntryRow from "./JournalComponents/JournalEntryRow";
 import { ChangeEvent, useState } from "react";
-import { TransactionData } from "@/lib/types";
-import { formatFromMoney, formatMoney } from "@/lib/helpers";
+import { Account, JournalData, TransactionData } from "@/lib/types";
+import { formatFromMoney } from "@/lib/helpers";
 import { Button } from "../ui/button";
-
-// Table Header component
-const Th = ({
-  children,
-  className,
-}: {
-  children: string;
-  className?: string;
-}) => {
-  return (
-    <th
-      className={cn(
-        "border-secondary border-2 text-center px-6 py-2",
-        className
-      )}
-    >
-      {children}
-    </th>
-  );
-};
-
-type JournalData = {
-  id: number;
-  description: string;
-  debit: number;
-  credit: number;
-};
-
-const defaultTransaction: TransactionData = {
-  id: NaN,
-  journalId: NaN,
-  amount: 0,
-  accountId: NaN,
-  isDebit: true,
-};
-
-const defaultTransactions: TransactionData[] = [
-  {
-    id: NaN,
-    journalId: NaN,
-    amount: 0,
-    accountId: NaN,
-    isDebit: true,
-  },
-  {
-    id: NaN,
-    journalId: NaN,
-    amount: 0,
-    accountId: NaN,
-    isDebit: false,
-  },
-];
+import {
+  defaultJournalData,
+  defaultTransaction,
+  defaultTransactions,
+} from "@/lib/defaults";
+import { TFoot, Thead } from "./JournalComponents/TableParts";
 
 const JournalEntry = () => {
   const [transactionData, setTransactionData] =
     useState<TransactionData[]>(defaultTransactions);
-  const [entry, setEntry] = useState<JournalData>({
-    id: NaN,
-    description: "",
-    debit: 0,
-    credit: 0,
-  });
+  const [entry, setEntry] = useState<JournalData>(defaultJournalData);
 
-  // Handle Functions
-  const handleAccountChange = (e: string, row: number) => {
+  // Helpers
+  const getTransaction = (
+    row: number
+  ): [TransactionData, TransactionData[]] => {
     const newTransactionData = transactionData.map((data) => data);
     const transaction = newTransactionData[row];
+
+    return [transaction, newTransactionData];
+  };
+
+  // Handle Functions
+  const handleRemarkChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    row: number
+  ) => {
+    const [transaction, newTransactionData] = getTransaction(row);
+    transaction.remark = e.target.value;
+
+    setTransactionData(newTransactionData);
+  };
+
+  const handleAccountChange = (e: string, row: number) => {
+    const [transaction, newTransactionData] = getTransaction(row);
     transaction.accountId = +e;
 
     setTransactionData(newTransactionData);
   };
 
   const handleToggleChange = (row: number) => {
-    const newTransactionData = transactionData.map((data) => data);
-    const transaction = newTransactionData[row];
+    const [transaction, newTransactionData] = getTransaction(row);
     transaction.isDebit = !transaction.isDebit;
 
     setTransactionData(newTransactionData);
@@ -89,8 +55,7 @@ const JournalEntry = () => {
     e: ChangeEvent<HTMLInputElement>,
     row: number
   ) => {
-    const newTransactionData = transactionData.map((data) => data);
-    const transaction = newTransactionData[row];
+    const [transaction, newTransactionData] = getTransaction(row);
     const parsedNumber = formatFromMoney(e.target.value);
     transaction.amount = parsedNumber;
 
@@ -124,6 +89,7 @@ const JournalEntry = () => {
     setTransactionData(newTransactionData);
   };
 
+  // Running on every render
   const totals = transactionData.reduce(
     (acc, row) => {
       if (row.isDebit) {
@@ -144,28 +110,20 @@ const JournalEntry = () => {
     }
   );
 
+  ////////////////////////////////////////////////////////////
+  // To use for testing
+  const accounts: Account[] = [
+    { id: 1, name: "KPAY" },
+    { id: 2, name: "Cash Book" },
+  ];
+  ////////////////////////////////////////////////////////////
+
   return (
     <div>
-      <table
-        onKeyDown={(e) => {
-          if (e.altKey) {
-            if (e.code === "KeyN") {
-              hanldeAddNewRow();
-            } else if (e.code === "KeyD") {
-              handleRemoveLine();
-            }
-          }
-        }}
-      >
-        <thead>
-          <tr>
-            <Th>No</Th>
-            <Th className="w-64">Account</Th>
-            <Th>Debit</Th>
-            <Th>Credit</Th>
-            <Th>IsDebit</Th>
-          </tr>
-        </thead>
+      <table>
+        {/* Headers */}
+        <Thead />
+        {/* Body */}
         <tbody>
           {/* Journal Id No  */}
           <tr>
@@ -183,32 +141,20 @@ const JournalEntry = () => {
                 onAccountChange={handleAccountChange}
                 onToggleChange={handleToggleChange}
                 onAmountChange={handleAmountChange}
+                onRemarkChange={handleRemarkChange}
+                accounts={accounts}
               />
             );
           })}
         </tbody>
-        <tfoot>
-          <tr className="">
-            <Td className="text-right border-t-primary border-t-2 border-b-primary border-b-2 font-semibold">
-              Desc:
-            </Td>
-            <Td className="italic border-t-primary border-t-2 border-b-primary border-b-2 font-semibold">
-              <input
-                className="h-full w-full bg-transparent py-3 px-2"
-                value={entry.description}
-                onChange={handleDescriptionChange}
-              />
-            </Td>
-            <Td className="text-center border-t-primary border-t-2 border-b-primary border-b-2 font-semibold">
-              {formatMoney(totals.debit)}
-            </Td>
-            <Td className="text-center border-t-primary border-t-2 border-b-primary border-b-2 font-semibold">
-              {formatMoney(totals.credit)}
-            </Td>
-            <Td className="text-right border-t-primary border-t-2 border-b-primary border-b-2 font-semibold"></Td>
-          </tr>
-        </tfoot>
+        {/* Description */}
+        <TFoot
+          description={entry.description}
+          handleDescriptionChange={handleDescriptionChange}
+          totals={totals}
+        />
       </table>
+      {/* Buttons */}
       <div>
         <Button onClick={hanldeAddNewRow}>Add Line</Button>
         <Button onClick={handleRemoveLine}>Remove Line</Button>

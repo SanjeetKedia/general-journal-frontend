@@ -1,4 +1,3 @@
-import SearchInput from "@/components/custom/SearchInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -84,7 +83,9 @@ const Account = () => {
   ) => {
     e.preventDefault();
 
-    const accountNames = await axios<string[]>("/api/account/getAccountNames")
+    const accountDetail = await axios<{ id: number; name: string }[]>(
+      "/api/account/getAccountNames"
+    )
       .then((resp) => {
         return resp.data;
       })
@@ -92,9 +93,11 @@ const Account = () => {
         alert(err);
       });
 
-    if (!accountNames) {
+    if (!accountDetail) {
       return alert("ERROR");
     }
+
+    const accountNames = accountDetail.map((account) => account.name);
 
     if (accountNames.indexOf(accountFormData.name) !== -1) {
       return alert(`The account name: ${accountFormData.name} already exists!`);
@@ -159,7 +162,7 @@ const Account = () => {
       </div>
       <Separator orientation="vertical" className="mx-20" />
       <div className="flex flex-col">
-        <SearchInput />
+        {/* <SearchInput /> */}
         <Button onClick={getAccounts}>Get Accounts</Button>
         <ul>
           {accounts.map((x) => (
