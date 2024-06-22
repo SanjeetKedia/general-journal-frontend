@@ -1,7 +1,7 @@
 import Td from "./JournalComponents/Td";
 import JournalEntryRow from "./JournalComponents/JournalEntryRow";
 import { ChangeEvent, useState } from "react";
-import { Account, JournalData, TransactionData } from "@/lib/types";
+import { Account, EntryPost, JournalData, TransactionData } from "@/lib/types";
 import { formatFromMoney } from "@/lib/helpers";
 import { Button } from "../ui/button";
 import {
@@ -10,6 +10,7 @@ import {
   defaultTransactions,
 } from "@/lib/defaults";
 import { TFoot, Thead } from "./JournalComponents/TableParts";
+import axios from "axios";
 
 const JournalEntry = () => {
   const [transactionData, setTransactionData] =
@@ -89,6 +90,25 @@ const JournalEntry = () => {
     setTransactionData(newTransactionData);
   };
 
+  const handleSaveNewTransaction = async () => {
+    const data: EntryPost = {
+      ...entry,
+      debit: totals.debit,
+      credit: totals.credit,
+      transactions: [...transactionData],
+      accountingDay: 1,
+    };
+
+    console.log(data);
+
+    const response = await axios.post<URL, { success: boolean }>(
+      "/api/journal/saveNewEntry",
+      data
+    );
+
+    console.log(response.success);
+  };
+
   // Running on every render
   const totals = transactionData.reduce(
     (acc, row) => {
@@ -158,6 +178,7 @@ const JournalEntry = () => {
       <div>
         <Button onClick={hanldeAddNewRow}>Add Line</Button>
         <Button onClick={handleRemoveLine}>Remove Line</Button>
+        <Button onClick={handleSaveNewTransaction}>Save New Entry</Button>
       </div>
     </div>
   );

@@ -18,3 +18,19 @@ export type Account = {
   id: number;
   name: string;
 };
+
+export type EntryPost = {
+  accountingDay: number;
+  id: number;
+  description: string;
+  debit: number;
+  credit: number;
+  transactions: {
+    id: number;
+    journalId: number;
+    amount: number;
+    accountId: number;
+    isDebit: boolean;
+    remark: string;
+  }[];
+};
