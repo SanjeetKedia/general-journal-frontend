@@ -10,16 +10,12 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import { getAccounts } from "@/lib/helpers";
+import type { Account } from "@/lib/types";
 import axios from "axios";
 import { ChangeEvent, PropsWithChildren, useState } from "react";
 
 // Types
-interface Account {
-  id: number;
-  name: string;
-  type: string;
-  description: string;
-}
 
 interface AccountFormType {
   name: string;
@@ -43,18 +39,13 @@ const Account = () => {
   });
 
   // Handle Functions
-  // Temp
-  const getAccounts = () => {
-    axios
-      .get<Account[]>("/api/account/getAccounts")
-      .then((resp) => {
-        setAccounts(resp.data);
-        return resp;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  const handleGetAccounts = async () => {
+    const accounts = await getAccounts();
+    if (accounts) {
+      setAccounts(accounts);
+    }
   };
+
   /////////////
   const handleFormInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -163,7 +154,7 @@ const Account = () => {
       <Separator orientation="vertical" className="mx-20" />
       <div className="flex flex-col">
         {/* <SearchInput /> */}
-        <Button onClick={getAccounts}>Get Accounts</Button>
+        <Button onClick={handleGetAccounts}>Get Accounts</Button>
         <ul>
           {accounts.map((x) => (
             <li key={x.id}>{x.name}</li>

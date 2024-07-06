@@ -9,10 +9,10 @@ export const Thead = () => {
       <tr>
         <Th>No</Th>
         <Th className="w-64">Account</Th>
-        <Th className="w-32">Remark</Th>
-        <Th className="w-32">Debit</Th>
-        <Th className="w-32">Credit</Th>
-        <Th>IsDebit</Th>
+        <Th className="">Remark</Th>
+        <Th className="">Debit</Th>
+        <Th className="">Credit</Th>
+        <Th className="w-fit">IsDebit</Th>
       </tr>
     </thead>
   );

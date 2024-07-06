@@ -1,8 +1,14 @@
 import Td from "./JournalComponents/Td";
 import JournalEntryRow from "./JournalComponents/JournalEntryRow";
-import { ChangeEvent, useState } from "react";
-import { Account, EntryPost, JournalData, TransactionData } from "@/lib/types";
-import { formatFromMoney } from "@/lib/helpers";
+import { ChangeEvent, useEffect, useState } from "react";
+import {
+  Account,
+  AccountingDay,
+  EntryPost,
+  JournalData,
+  TransactionData,
+} from "@/lib/types";
+import { formatFromMoney, getAccounts } from "@/lib/helpers";
 import { Button } from "../ui/button";
 import {
   defaultJournalData,
@@ -12,10 +18,11 @@ import {
 import { TFoot, Thead } from "./JournalComponents/TableParts";
 import axios from "axios";
 
-const JournalEntry = () => {
+const JournalEntry = ({ accountingDay }: { accountingDay: AccountingDay }) => {
   const [transactionData, setTransactionData] =
     useState<TransactionData[]>(defaultTransactions);
   const [entry, setEntry] = useState<JournalData>(defaultJournalData);
+  const [accounts, setAccounts] = useState<Account[]>([]);
 
   // Helpers
   const getTransaction = (
@@ -26,6 +33,13 @@ const JournalEntry = () => {
 
     return [transaction, newTransactionData];
   };
+
+  // On start
+  useEffect(() => {
+    getAccounts().then((res) => {
+      res && setAccounts(res);
+    });
+  }, []);
 
   // Handle Functions
   const handleRemarkChange = (
@@ -96,17 +110,13 @@ const JournalEntry = () => {
       debit: totals.debit,
       credit: totals.credit,
       transactions: [...transactionData],
-      accountingDay: 1,
+      accountingDay: accountingDay.id,
     };
-
-    console.log(data);
 
     const response = await axios.post<URL, { success: boolean }>(
       "/api/journal/saveNewEntry",
       data
     );
-
-    console.log(response.success);
   };
 
   // Running on every render
@@ -130,17 +140,17 @@ const JournalEntry = () => {
     }
   );
 
-  ////////////////////////////////////////////////////////////
-  // To use for testing
-  const accounts: Account[] = [
-    { id: 1, name: "KPAY" },
-    { id: 2, name: "Cash Book" },
-  ];
-  ////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////
+  // // To use for testing
+  // const accounts: Account[] = [
+  //   { id: 1, name: "KPAY" },
+  //   { id: 2, name: "Cash Book" },
+  // ];
+  // ////////////////////////////////////////////////////////////
 
   return (
-    <div>
-      <table>
+    <div className="flex gap-2">
+      <table className="">
         {/* Headers */}
         <Thead />
         {/* Body */}
@@ -175,10 +185,20 @@ const JournalEntry = () => {
         />
       </table>
       {/* Buttons */}
-      <div>
+      <div className="flex flex-col gap-2">
         <Button onClick={hanldeAddNewRow}>Add Line</Button>
-        <Button onClick={handleRemoveLine}>Remove Line</Button>
-        <Button onClick={handleSaveNewTransaction}>Save New Entry</Button>
+        <Button
+          onClick={handleRemoveLine}
+          disabled={transactionData.length <= 2}
+        >
+          Remove Line
+        </Button>
+        <Button
+          onClick={handleSaveNewTransaction}
+          disabled={totals.debit !== totals.credit}
+        >
+          Save New Entry
+        </Button>
       </div>
     </div>
   );

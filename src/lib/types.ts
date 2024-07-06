@@ -17,6 +17,8 @@ export type JournalData = {
 export type Account = {
   id: number;
   name: string;
+  type: string;
+  description: string;
 };
 
 export type EntryPost = {
@@ -33,4 +35,10 @@ export type EntryPost = {
     isDebit: boolean;
     remark: string;
   }[];
+};
+
+export type AccountingDay = {
+  id: number;
+  date: string;
+  isActive: boolean;
 };

@@ -1,3 +1,8 @@
+import axios from "axios";
+import { Account } from "./types";
+import { SetStateAction } from "react";
+import { error } from "console";
+
 export const findAccountName = (
   id: number,
   accountArray: { id: number; name: string }[]
@@ -29,4 +34,17 @@ export const formatFromMoney = (string: string) => {
   const number = parseFloat(cleanedNumber);
 
   return number;
+};
+
+export const getAccounts = async () => {
+  const response = await axios
+    .get<Account[]>("/api/account/getAccounts")
+    .then((resp) => {
+      return resp.data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+  return response;
 };
