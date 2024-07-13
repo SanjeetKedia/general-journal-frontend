@@ -18,7 +18,13 @@ import {
 import { TFoot, Thead } from "./JournalComponents/TableParts";
 import axios from "axios";
 
-const JournalEntry = ({ accountingDay }: { accountingDay: AccountingDay }) => {
+const JournalEntry = ({
+  accountingDay,
+  refreshDisplay,
+}: {
+  accountingDay: AccountingDay;
+  refreshDisplay: () => void;
+}) => {
   const [transactionData, setTransactionData] =
     useState<TransactionData[]>(defaultTransactions);
   const [entry, setEntry] = useState<JournalData>(defaultJournalData);
@@ -117,6 +123,8 @@ const JournalEntry = ({ accountingDay }: { accountingDay: AccountingDay }) => {
       "/api/journal/saveNewEntry",
       data
     );
+
+    refreshDisplay();
   };
 
   // Running on every render
@@ -149,7 +157,7 @@ const JournalEntry = ({ accountingDay }: { accountingDay: AccountingDay }) => {
   // ////////////////////////////////////////////////////////////
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 overflow-auto">
       <table className="">
         {/* Headers */}
         <Thead />

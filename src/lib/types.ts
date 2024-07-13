@@ -42,3 +42,17 @@ export type AccountingDay = {
   date: string;
   isActive: boolean;
 };
+
+export type JournalDataDisplay = {
+  id: number;
+  description: string;
+  amount: number;
+  accountingDay: number;
+  journalRow: {
+    id: number;
+    journalId: number;
+    accountId: number;
+    amount: number;
+    remark: string;
+  }[];
+}[];

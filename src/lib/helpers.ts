@@ -1,7 +1,5 @@
 import axios from "axios";
 import { Account } from "./types";
-import { SetStateAction } from "react";
-import { error } from "console";
 
 export const findAccountName = (
   id: number,

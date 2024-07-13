@@ -44,7 +44,6 @@ const SearchInput = ({
   // };
 
   const handleSelectOption = (option: string) => {
-    console.log(option);
     onChange(option);
     setHidden(true);
   };
