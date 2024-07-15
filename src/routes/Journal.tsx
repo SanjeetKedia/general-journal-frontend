@@ -6,12 +6,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 // import { Button } from "@/components/ui/button";
 
+const defaultAccountingDay = {
+  id: NaN,
+  date: "",
+  isActive: false,
+};
+
 const Journal = () => {
-  const [accountingDay, setAccoutingDay] = useState<AccountingDay>({
-    id: NaN,
-    date: "",
-    isActive: false,
-  });
+  const [accountingDay, setAccoutingDay] =
+    useState<AccountingDay>(defaultAccountingDay);
   const [dayLoad, setDayLoad] = useState<boolean>(false);
   const [journalData, setJournalData] = useState<JournalDataDisplay>();
 
@@ -34,6 +37,22 @@ const Journal = () => {
     getAccountingDay();
   };
 
+  const handleEndAccountingDay = async () => {
+    if (isNaN(accountingDay.id)) return;
+
+    const response = await axios.post("/api/accountingDay/endAccountingDay", {
+      id: accountingDay.id,
+    });
+
+    if (response.data.error.length > 0) {
+      console.log(response.data.error);
+      return;
+    }
+
+    setDayLoad(response.data.settings.dayLoad);
+    setAccoutingDay(defaultAccountingDay);
+  };
+
   return (
     <div className="w-full h-screen">
       {dayLoad && journalData ? (
@@ -54,6 +73,7 @@ const Journal = () => {
           <JournalDisplayTable
             refresh={hanldeRefresh}
             journalData={journalData}
+            endAccountingDay={handleEndAccountingDay}
           />
         </div>
       ) : (
