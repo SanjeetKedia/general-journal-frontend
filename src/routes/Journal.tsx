@@ -1,4 +1,5 @@
 import JournalDisplayTable from "@/components/custom/JournalComponents/JournalDisplayTable";
+import NewAccountingDay from "@/components/custom/JournalComponents/NewAccountingDay";
 import JournalEntry from "@/components/custom/JournalEntry";
 import { Separator } from "@/components/ui/separator";
 import { AccountingDay, JournalDataDisplay } from "@/lib/types";
@@ -34,6 +35,10 @@ const Journal = () => {
     getAccountingDay();
   };
 
+  const handleNewAccountingDay = () => {
+    getAccountingDay();
+  };
+
   return (
     <div className="w-full h-screen">
       {dayLoad && journalData ? (
@@ -57,7 +62,7 @@ const Journal = () => {
           />
         </div>
       ) : (
-        <div>Make a new accounting day</div>
+        <NewAccountingDay onNewAccountingDay={handleNewAccountingDay} />
       )}
     </div>
   );
