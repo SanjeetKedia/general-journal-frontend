@@ -7,9 +7,10 @@ const routes = [
     text: "Journal",
   },
   {
-    route: "account",
+    route: "/account",
     text: "Account",
   },
+  { route: "/ledger", text: "Ledger" },
 ];
 
 function App() {

@@ -7,6 +7,7 @@ import Journal from "./routes/Journal.tsx";
 import Account from "./routes/Account.tsx";
 import { ThemeProvider } from "./components/themeProvider.tsx";
 import { Toaster } from "./components/ui/toaster.tsx";
+import Ledger from "./routes/Ledger.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/account",
         element: <Account />,
+      },
+      {
+        path: "/ledger",
+        element: <Ledger />,
       },
     ],
   },
