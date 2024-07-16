@@ -43,9 +43,11 @@ const Td = ({
 const JournalDisplayTable = ({
   journalData,
   refresh,
+  endAccountingDay,
 }: {
   journalData: JournalDataDisplay;
   refresh: () => void;
+  endAccountingDay: () => Promise<void>;
 }) => {
   const [accounts, setAccounts] = useState<{ id: number; name: string }[]>();
   const [selectedRow, setSelectedRow] = useState<number>(NaN);
@@ -162,10 +164,11 @@ const JournalDisplayTable = ({
           </tbody>
         </table>
       </ScrollArea>
-      <div className="flex flex-col align-center px-6">
+      <div className="flex flex-col align-center px-6 gap-2">
         <Button disabled={isNaN(selectedRow)} onClick={handleDeteRow}>
           Delete Line
         </Button>
+        <Button onClick={endAccountingDay}>End Accounting Day</Button>
       </div>
     </div>
   );
