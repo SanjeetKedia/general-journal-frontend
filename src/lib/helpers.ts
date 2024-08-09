@@ -46,3 +46,6 @@ export const getAccounts = async () => {
 
   return response;
 };
+
+export const formatStringToDate = (dateStr: string) =>
+  new Date(dateStr).toLocaleDateString(undefined, { dateStyle: "medium" });

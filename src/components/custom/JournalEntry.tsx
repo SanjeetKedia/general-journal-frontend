@@ -119,6 +119,20 @@ const JournalEntry = ({
       accountingDay: accountingDay.id,
     };
 
+    if (data.credit !== data.debit) {
+      return alert("Debit and Credit must be same");
+    }
+
+    if (/^\s*$/.test(data.description)) {
+      return alert("Description cannot be empty");
+    }
+
+    for (const x of data.transactions) {
+      if (Number.isNaN(x.accountId)) {
+        return alert(`Please choose an account`);
+      }
+    }
+
     const response = await axios.post<URL, { success: boolean }>(
       "/api/journal/saveNewEntry",
       data
@@ -157,19 +171,12 @@ const JournalEntry = ({
   // ////////////////////////////////////////////////////////////
 
   return (
-    <div className="flex gap-2 overflow-auto">
-      <table className="">
+    <div className="flex gap-2 overflow-auto w-full justify-center px-2">
+      <table className="flex-1">
         {/* Headers */}
         <Thead />
         {/* Body */}
         <tbody>
-          {/* Journal Id No  */}
-          <tr>
-            <Td
-              rowSpan={transactionData.length + 1}
-              className="text-center"
-            ></Td>
-          </tr>
           {transactionData.map((journalTransaction, key) => {
             return (
               <JournalEntryRow

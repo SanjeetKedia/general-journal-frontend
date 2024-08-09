@@ -76,6 +76,7 @@ const JournalEntryRow = ({
           options={accounts}
           value={accountName}
           onChange={handleAccountChange}
+          className="border-none"
         />
       </Td>
       <Td className="relative">
@@ -97,7 +98,7 @@ const JournalEntryRow = ({
           ></NumInput>
         )}
       </Td>
-      <Td className="relative">
+      <Td className="relative w-fit">
         <Toggle
           pressed={data.isDebit}
           onPressedChange={handleToggleChange}

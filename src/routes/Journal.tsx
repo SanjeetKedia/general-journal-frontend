@@ -2,6 +2,7 @@ import JournalDisplayTable from "@/components/custom/JournalComponents/JournalDi
 import NewAccountingDay from "@/components/custom/JournalComponents/NewAccountingDay";
 import JournalEntry from "@/components/custom/JournalEntry";
 import { Separator } from "@/components/ui/separator";
+import { formatStringToDate } from "@/lib/helpers";
 import { AccountingDay, JournalDataDisplay } from "@/lib/types";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -67,7 +68,7 @@ const Journal = () => {
               <span className="font-bold">
                 Accounting Day {accountingDay.id}
               </span>{" "}
-              : {accountingDay.date}
+              : {formatStringToDate(accountingDay.date)}
             </h1>
             <JournalEntry
               refreshDisplay={hanldeRefresh}

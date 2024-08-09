@@ -6,13 +6,12 @@ import { ChangeEvent } from "react";
 export const Thead = () => {
   return (
     <thead>
-      <tr>
-        <Th>No</Th>
-        <Th className="w-64">Account</Th>
+      <tr className="c">
+        <Th className="w-32">Account</Th>
         <Th className="">Remark</Th>
-        <Th className="">Debit</Th>
-        <Th className="">Credit</Th>
-        <Th className="w-fit">IsDebit</Th>
+        <Th className="w-32">Debit</Th>
+        <Th className="w-32">Credit</Th>
+        <Th className="w-3">IsDebit</Th>
       </tr>
     </thead>
   );
@@ -33,9 +32,9 @@ export const TFoot = ({
   return (
     <tfoot>
       <tr className="">
-        <Td className="text-right border-t-primary border-t-2 border-b-primary border-b-2 font-semibold">
+        {/* <Td className="text-right border-t-primary border-t-2 border-b-primary border-b-2 font-semibold">
           Desc:
-        </Td>
+        </Td> */}
         <Td
           colSpan={2}
           className="italic border-t-primary border-t-2 border-b-primary border-b-2 font-semibold"
@@ -44,6 +43,7 @@ export const TFoot = ({
             className="h-full w-full bg-transparent py-3 px-2"
             value={description}
             onChange={handleDescriptionChange}
+            placeholder="Description"
           />
         </Td>
         <Td className="text-center border-t-primary border-t-2 border-b-primary border-b-2 font-semibold">
