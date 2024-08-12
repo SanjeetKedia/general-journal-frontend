@@ -15,6 +15,8 @@ export const findAccountName = (
 };
 
 export const formatMoney = (number: number) => {
+  if (number === undefined) return;
+  if (number === null) return "";
   if (number === 0) return "-";
 
   if (Number.isNaN(number)) return "-";
@@ -49,3 +51,14 @@ export const getAccounts = async () => {
 
 export const formatStringToDate = (dateStr: string) =>
   new Date(dateStr).toLocaleDateString(undefined, { dateStyle: "medium" });
+
+export const getStartOfDay = (day?: Date) => {
+  if (day) {
+    day.setHours(0, 0, 0, 0);
+    return day;
+  }
+
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+  return startOfDay;
+};

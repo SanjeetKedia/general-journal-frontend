@@ -1,7 +1,20 @@
 import AccountSelect from "@/components/custom/JournalComponents/AccountSelect";
 import { Button } from "@/components/ui/button";
 import { CalenderInput } from "@/components/ui/calender-input";
-import { findAccountName, getAccounts } from "@/lib/helpers";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  findAccountName,
+  formatMoney,
+  getAccounts,
+  getStartOfDay,
+} from "@/lib/helpers";
 import { Account } from "@/lib/types";
 import { Separator } from "@radix-ui/react-separator";
 import axios from "axios";
@@ -12,10 +25,22 @@ import { DateRange } from "react-day-picker";
 const Ledger = () => {
   const [accounts, setAccounts] = useState<Account[]>();
   const [accountId, setAccountId] = useState(NaN);
-  const [dateRange, setDateRange] = React.useState<DateRange>({
-    from: new Date(),
-    to: new Date(),
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: getStartOfDay(),
+    to: getStartOfDay(),
   });
+  const [displayData, setDisplayData] = useState<
+    {
+      balance: number;
+      id: number;
+      journalId: number;
+      amount: number;
+      remark: string;
+      description: string;
+      accountingDay: number;
+      date: string | undefined;
+    }[]
+  >([]);
 
   useEffect(() => {
     getAccounts().then((data) => {
@@ -30,8 +55,10 @@ const Ledger = () => {
     setAccountId(+e);
   };
 
-  const hanldeDateChange = (e: DateRange | undefined) => {
+  const handleDateChange = (e: DateRange | undefined) => {
     if (!e) return;
+
+    console.log(e.from, e.to);
 
     setDateRange(e);
   };
@@ -56,7 +83,18 @@ const Ledger = () => {
     };
 
     const resp = await axios.post("/api/ledger/getTransactions", queryParams);
-    console.log(resp.data);
+    const data: {
+      balance: number;
+      id: number;
+      journalId: number;
+      amount: number;
+      remark: string;
+      description: string;
+      accountingDay: number;
+      date: string | undefined;
+    }[] = resp.data.data;
+
+    setDisplayData(data);
   };
 
   return (
@@ -66,7 +104,7 @@ const Ledger = () => {
           <div className="flex-1 flex flex-col py-3 gap-5">
             <div className="flex flex-col w-fit mx-auto">
               <p className="mx-auto font-bold text-2xl">
-                {findAccountName(accountId, accounts)}
+                {findAccountName(accountId, accounts) || "Select an account"}
               </p>
               <Separator className="border w-" />
               <p className="mx-auto font-bold text-xl">
@@ -74,28 +112,60 @@ const Ledger = () => {
                 {dateRange.from?.toDateString()}
               </p>
             </div>
-            <table className="border-collapse">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Detail</th>
-                  <th>Remark</th>
-                  <th>In</th>
-                  <th>Out</th>
-                  <th>Balance</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td></td>
-                  <td>Balance c/d</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>0</td>
-                </tr>
-              </tbody>
-            </table>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                    Date
+                  </TableHead>
+                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                    Description
+                  </TableHead>
+                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                    Remark
+                  </TableHead>
+                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                    In
+                  </TableHead>
+                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                    Out
+                  </TableHead>
+                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                    Balance
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {displayData.length > 0 ? (
+                  displayData.map((row) => {
+                    return (
+                      <TableRow key={row.id}>
+                        <TableCell className="border">
+                          {row.date
+                            ? new Date(row.date).toLocaleDateString()
+                            : ""}
+                        </TableCell>
+                        <TableCell className="border">
+                          {row.description}
+                        </TableCell>
+                        <TableCell className="border">{row.remark}</TableCell>
+                        <TableCell className="border text-right">
+                          {row.amount >= 0 ? formatMoney(row.amount) : ""}
+                        </TableCell>
+                        <TableCell className="border text-right">
+                          {row.amount < 0 ? formatMoney(row.amount) : ""}
+                        </TableCell>
+                        <TableCell className="border text-right">
+                          {formatMoney(row.balance)}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                ) : (
+                  <TableRow></TableRow>
+                )}
+              </TableBody>
+            </Table>
           </div>
           <Separator orientation="vertical" className="border my-3 rounded" />
           <div className="flex flex-col w-1/12 min-w-fit px-5 py-3 gap-3">
@@ -104,7 +174,7 @@ const Ledger = () => {
               value={findAccountName(accountId, accounts)}
               onChange={handleAccountChange}
             />
-            <CalenderInput date={dateRange} onDateChange={hanldeDateChange} />
+            <CalenderInput date={dateRange} onDateChange={handleDateChange} />
             <Button onClick={handleGetData}>Get Data</Button>
           </div>
         </>
