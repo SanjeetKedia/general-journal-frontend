@@ -19,7 +19,7 @@ import { Account } from "@/lib/types";
 import { Separator } from "@radix-ui/react-separator";
 import axios from "axios";
 import { Loader } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 
 const Ledger = () => {

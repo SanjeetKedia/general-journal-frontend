@@ -77,7 +77,7 @@ const JournalDisplayTable = ({
   const handleDeteRow = async () => {
     if (isNaN(selectedRow)) return;
 
-    const response = await axios.post("/api/journal/deleteJournalData", {
+    await axios.post("/api/journal/deleteJournalData", {
       id: selectedRow,
     });
 

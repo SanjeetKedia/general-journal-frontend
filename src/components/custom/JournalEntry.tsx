@@ -1,4 +1,3 @@
-import Td from "./JournalComponents/Td";
 import JournalEntryRow from "./JournalComponents/JournalEntryRow";
 import { ChangeEvent, useEffect, useState } from "react";
 import {
@@ -133,7 +132,7 @@ const JournalEntry = ({
       }
     }
 
-    const response = await axios.post<URL, { success: boolean }>(
+    await axios.post<URL, { success: boolean }>(
       "/api/journal/saveNewEntry",
       data
     );
