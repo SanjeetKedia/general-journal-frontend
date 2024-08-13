@@ -83,19 +83,23 @@ const JournalEntryRow = ({
         <Input value={data.remark} onChange={handleRemarkChange} />
       </Td>
       <Td className="relative">
-        {data.isDebit && (
+        {data.isDebit ? (
           <NumInput
             value={data.amount}
             onChange={handleAmountChange}
           ></NumInput>
+        ) : (
+          <td></td>
         )}
       </Td>
       <Td className="relative">
-        {!data.isDebit && (
+        {!data.isDebit ? (
           <NumInput
             value={data.amount}
             onChange={handleAmountChange}
           ></NumInput>
+        ) : (
+          <td></td>
         )}
       </Td>
       <Td className="relative w-fit">

@@ -24,9 +24,10 @@ const JournalEntry = ({
   accountingDay: AccountingDay;
   refreshDisplay: () => void;
 }) => {
-  const [transactionData, setTransactionData] =
-    useState<TransactionData[]>(defaultTransactions);
-  const [entry, setEntry] = useState<JournalData>(defaultJournalData);
+  const [transactionData, setTransactionData] = useState<TransactionData[]>([
+    ...defaultTransactions,
+  ]);
+  const [entry, setEntry] = useState<JournalData>({ ...defaultJournalData });
   const [accounts, setAccounts] = useState<Account[]>([]);
 
   // Helpers
@@ -75,11 +76,22 @@ const JournalEntry = ({
     e: ChangeEvent<HTMLInputElement>,
     row: number
   ) => {
-    const [transaction, newTransactionData] = getTransaction(row);
-    const parsedNumber = formatFromMoney(e.target.value);
-    transaction.amount = parsedNumber;
+    // const [transaction, newTransactionData] = getTransaction(row);
+    // const parsedNumber = formatFromMoney(e.target.value);
+    // transaction.amount = parsedNumber;
 
-    setTransactionData(newTransactionData);
+    const newTransaction = transactionData.map((x, i) => {
+      if (i === row) {
+        const parsedNumber = formatFromMoney(e.target.value);
+        return {
+          ...x,
+          amount: parsedNumber,
+        };
+      }
+      return x;
+    });
+
+    setTransactionData(newTransaction);
   };
 
   const handleDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
