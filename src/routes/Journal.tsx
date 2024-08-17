@@ -4,7 +4,7 @@ import JournalEntry from "@/components/custom/JournalEntry";
 import { Separator } from "@/components/ui/separator";
 import { formatStringToDate } from "@/lib/helpers";
 import { AccountingDay, JournalDataDisplay } from "@/lib/types";
-import axios from "axios";
+import apiClient from "@/lib/axiosInstance";
 import { useEffect, useState } from "react";
 // import { Button } from "@/components/ui/button";
 
@@ -21,11 +21,11 @@ const Journal = () => {
   const [journalData, setJournalData] = useState<JournalDataDisplay>();
 
   const getAccountingDay = async () => {
-    const response = await axios.get("/api/accountingDay/getAccountingDay");
+    const response = await apiClient.get("/api/accountingDay/getAccountingDay");
     setDayLoad(response.data.settings.dayLoad);
     setAccoutingDay(response.data.data);
 
-    const journalData = await axios.post("/api/journal/getJournalData", {
+    const journalData = await apiClient.post("/api/journal/getJournalData", {
       accountingDay: response.data.data.id,
     });
     setJournalData(journalData.data.data);
@@ -42,9 +42,12 @@ const Journal = () => {
   const handleEndAccountingDay = async () => {
     if (isNaN(accountingDay.id)) return;
 
-    const response = await axios.post("/api/accountingDay/endAccountingDay", {
-      id: accountingDay.id,
-    });
+    const response = await apiClient.post(
+      "/api/accountingDay/endAccountingDay",
+      {
+        id: accountingDay.id,
+      }
+    );
 
     if (response.data.error.length > 0) {
       console.log(response.data.error);

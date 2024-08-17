@@ -1,5 +1,5 @@
-import axios from "axios";
 import { Account } from "./types";
+import apiClient from "./axiosInstance";
 
 export const findAccountName = (
   id: number,
@@ -37,7 +37,7 @@ export const formatFromMoney = (string: string) => {
 };
 
 export const getAccounts = async () => {
-  const response = await axios
+  const response = await apiClient
     .get<Account[]>("/api/account/getAccounts")
     .then((resp) => {
       return resp.data;

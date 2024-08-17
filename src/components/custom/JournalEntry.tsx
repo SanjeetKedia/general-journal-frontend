@@ -15,7 +15,7 @@ import {
   defaultTransactions,
 } from "@/lib/defaults";
 import { TFoot, Thead } from "./JournalComponents/TableParts";
-import axios from "axios";
+import apiClient from "@/lib/axiosInstance";
 
 const JournalEntry = ({
   accountingDay,
@@ -144,7 +144,7 @@ const JournalEntry = ({
       }
     }
 
-    await axios.post<URL, { success: boolean }>(
+    await apiClient.post<URL, { success: boolean }>(
       "/api/journal/saveNewEntry",
       data
     );

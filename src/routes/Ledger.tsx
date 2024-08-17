@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import apiClient from "@/lib/axiosInstance";
 import {
   findAccountName,
   formatMoney,
@@ -17,7 +18,6 @@ import {
 } from "@/lib/helpers";
 import { Account } from "@/lib/types";
 import { Separator } from "@radix-ui/react-separator";
-import axios from "axios";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
@@ -82,7 +82,10 @@ const Ledger = () => {
       accountId: accountId,
     };
 
-    const resp = await axios.post("/api/ledger/getTransactions", queryParams);
+    const resp = await apiClient.post(
+      "/api/ledger/getTransactions",
+      queryParams
+    );
     const data: {
       balance: number;
       id: number;

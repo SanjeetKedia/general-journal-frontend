@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import apiClient from "@/lib/axiosInstance";
 import { getAccounts } from "@/lib/helpers";
 import type { Account } from "@/lib/types";
-import axios from "axios";
 import { ChangeEvent, PropsWithChildren, useState } from "react";
 
 // Types
@@ -74,7 +74,7 @@ const Account = () => {
   ) => {
     e.preventDefault();
 
-    const accountDetail = await axios<{ id: number; name: string }[]>(
+    const accountDetail = await apiClient<{ id: number; name: string }[]>(
       "/api/account/getAccountNames"
     )
       .then((resp) => {
@@ -102,7 +102,7 @@ const Account = () => {
       return alert("The description is empty");
     }
 
-    axios.post("/api/account/makeAccount", accountFormData);
+    apiClient.post("/api/account/makeAccount", accountFormData);
   };
 
   return (
