@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import axios from "axios";
+import apiClient from "@/lib/axiosInstance";
 import { useState } from "react";
 
 const NewAccountingDay = ({
@@ -12,7 +12,7 @@ const NewAccountingDay = ({
 
   //  Handle Functions
   const handleNewAccountingDay = async () => {
-    await axios.post("/api/accountingDay/makeNewAccountingDay", {
+    await apiClient.post("/api/accountingDay/makeNewAccountingDay", {
       date: date,
     });
 
