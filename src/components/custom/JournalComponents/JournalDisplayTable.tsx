@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import apiClient from "@/lib/axiosInstance";
 import { findAccountName, formatMoney, getAccounts } from "@/lib/helpers";
 import { JournalDataDisplay } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 
@@ -77,7 +77,7 @@ const JournalDisplayTable = ({
   const handleDeteRow = async () => {
     if (isNaN(selectedRow)) return;
 
-    await axios.post("/api/journal/deleteJournalData", {
+    await apiClient.post("/api/journal/deleteJournalData", {
       id: selectedRow,
     });
 
