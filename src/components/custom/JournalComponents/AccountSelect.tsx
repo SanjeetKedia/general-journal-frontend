@@ -7,47 +7,49 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { forwardRef, Ref } from "react";
 
-const AccountSelect = ({
-  value,
-  onChange,
-  options,
-  className,
-}: {
-  value: string;
+interface AccountSelectProps {
+  value: number;
   onChange: (e: string) => void;
   options: { id: number; name: string }[];
   className?: string;
-}) => {
-  return (
-    <Select
-      onValueChange={(e) => {
-        onChange(e);
-      }}
-    >
-      <SelectTrigger
-        className={cn("w-full text-left px-2 py-1", className)}
-        value={value}
+  ref: Ref<HTMLInputElement>;
+}
+
+const AccountSelect = forwardRef<HTMLButtonElement, AccountSelectProps>(
+  ({ value, onChange, options, className }, ref) => {
+    return (
+      <Select
+        onValueChange={(e) => {
+          onChange(e);
+        }}
+        value={isNaN(value) ? "" : String(value)}
       >
-        <SelectValue placeholder="Select an account" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          {options.map((option, i) => {
-            return (
-              <SelectItem
-                key={i}
-                className="cursor-pointer"
-                value={"" + option.id}
-              >
-                {option.name}
-              </SelectItem>
-            );
-          })}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  );
-};
+        <SelectTrigger
+          ref={ref}
+          className={cn("w-full text-left px-2 py-1", className)}
+        >
+          <SelectValue placeholder="Select an account" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {options.map((option, i) => {
+              return (
+                <SelectItem
+                  key={i}
+                  className="cursor-pointer"
+                  value={"" + option.id}
+                >
+                  {option.name}
+                </SelectItem>
+              );
+            })}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    );
+  }
+);
 
 export default AccountSelect;

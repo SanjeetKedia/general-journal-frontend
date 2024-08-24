@@ -87,7 +87,7 @@ const JournalDisplayTable = ({
   };
 
   return (
-    <div className="grid grid-cols-5 auto-rows-min flex-auto">
+    <div className="grid grid-cols-5 grid-rows-[auto_1fr_auto] flex-auto max-h-screen">
       <h1 className="text-center text-2xl p-3 grid-rows-subgrid col-span-5">
         General Journal
       </h1>

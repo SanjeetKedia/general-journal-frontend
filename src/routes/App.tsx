@@ -15,7 +15,7 @@ const routes = [
 
 function App() {
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <NavBar routes={routes} />
       <Outlet />
     </div>

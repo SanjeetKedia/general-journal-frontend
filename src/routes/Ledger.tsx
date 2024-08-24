@@ -174,7 +174,7 @@ const Ledger = () => {
           <div className="flex flex-col w-1/12 min-w-fit px-5 py-3 gap-3">
             <AccountSelect
               options={accounts}
-              value={findAccountName(accountId, accounts)}
+              value={accountId}
               onChange={handleAccountChange}
             />
             <CalenderInput date={dateRange} onDateChange={handleDateChange} />

@@ -63,7 +63,7 @@ const Journal = () => {
   };
 
   return (
-    <div className="w-full h-screen">
+    <div className="w-full max-h-full">
       {dayLoad && journalData ? (
         <div className="flex h-full">
           <div className="w-1/2 flex flex-col items-center">

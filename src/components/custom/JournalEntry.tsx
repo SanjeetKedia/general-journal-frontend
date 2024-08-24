@@ -1,5 +1,5 @@
 import JournalEntryRow from "./JournalComponents/JournalEntryRow";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
   Account,
   AccountingDay,
@@ -24,11 +24,15 @@ const JournalEntry = ({
   accountingDay: AccountingDay;
   refreshDisplay: () => void;
 }) => {
-  const [transactionData, setTransactionData] = useState<TransactionData[]>([
-    ...defaultTransactions,
-  ]);
+  // States
+  const [transactionData, setTransactionData] = useState<TransactionData[]>(
+    defaultTransactions()
+  );
   const [entry, setEntry] = useState<JournalData>({ ...defaultJournalData });
   const [accounts, setAccounts] = useState<Account[]>([]);
+
+  // Refs
+  const firstInputRef = useRef<HTMLButtonElement>(null);
 
   // Helpers
   const getTransaction = (
@@ -144,10 +148,19 @@ const JournalEntry = ({
       }
     }
 
-    await apiClient.post<URL, { success: boolean }>(
-      "/api/journal/saveNewEntry",
-      data
-    );
+    await apiClient
+      .post("/api/journal/saveNewEntry", data)
+      .then((data) => {
+        if (data.data.success) {
+          setTransactionData(defaultTransactions());
+          setEntry({ ...defaultJournalData });
+        }
+
+        if (firstInputRef.current) {
+          firstInputRef.current.focus();
+        }
+      })
+      .catch((err) => console.log(err));
 
     refreshDisplay();
   };
@@ -173,14 +186,6 @@ const JournalEntry = ({
     }
   );
 
-  // ////////////////////////////////////////////////////////////
-  // // To use for testing
-  // const accounts: Account[] = [
-  //   { id: 1, name: "KPAY" },
-  //   { id: 2, name: "Cash Book" },
-  // ];
-  // ////////////////////////////////////////////////////////////
-
   return (
     <div className="flex gap-2 overflow-auto w-full justify-center px-2">
       <table className="flex-1">
@@ -199,6 +204,7 @@ const JournalEntry = ({
                 onAmountChange={handleAmountChange}
                 onRemarkChange={handleRemarkChange}
                 accounts={accounts}
+                ref={key === 0 ? firstInputRef : null}
               />
             );
           })}

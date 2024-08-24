@@ -9,7 +9,7 @@ export const defaultTransaction: TransactionData = {
   remark: "",
 };
 
-export const defaultTransactions: TransactionData[] = [
+export const defaultTransactions = (): TransactionData[] => [
   {
     ...defaultTransaction,
   },
