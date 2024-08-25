@@ -22,11 +22,11 @@ const NewAccountingDay = ({
   const handleDateSelect = (e: Date | undefined) => {
     if (e == undefined) return;
 
-    const currentDate = new Date();
+    // const currentDate = new Date();
 
-    if (e < currentDate) {
-      return undefined;
-    }
+    // if (e < currentDate) {
+    //   return undefined;
+    // }
 
     setDate(e);
   };
