@@ -1,3 +1,4 @@
+import ConfirmationDialog from "@/components/pageComponents/EndAccountingDayConfirmatin";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import apiClient from "@/lib/axiosInstance";
@@ -51,6 +52,7 @@ const JournalDisplayTable = ({
 }) => {
   const [accounts, setAccounts] = useState<{ id: number; name: string }[]>();
   const [selectedRow, setSelectedRow] = useState<number>(NaN);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     getAccounts().then((data) => {
@@ -86,6 +88,32 @@ const JournalDisplayTable = ({
     refresh();
   };
 
+  const handleOpenDialog = () => setIsDialogOpen(true);
+
+  const handleCloseDialog = () => setIsDialogOpen(false);
+
+  const handleConfirmAction = () => {
+    endAccountingDay();
+  };
+
+  // Helpers
+  const getTotal = (
+    data: {
+      id: number;
+      journalId: number;
+      accountId: number;
+      amount: number;
+      remark: string;
+    }[]
+  ) => {
+    return data.reduce((acc, cur) => {
+      if (cur.amount > 0) {
+        return acc + cur.amount;
+      }
+      return acc;
+    }, 0);
+  };
+
   return (
     <div className="grid grid-cols-5 grid-rows-[auto_1fr_auto] flex-auto max-h-screen">
       <h1 className="text-center text-2xl p-3 grid-rows-subgrid col-span-5">
@@ -95,11 +123,21 @@ const JournalDisplayTable = ({
         <table className="w-full">
           <thead>
             <tr className="bg-secondary">
-              <Th>No</Th>
-              <Th>Account</Th>
-              <Th>Remark</Th>
-              <Th>Debit</Th>
-              <Th>Credit</Th>
+              <Th className="bg-primary text-primary-foreground border-secondary">
+                No
+              </Th>
+              <Th className="bg-primary text-primary-foreground border-secondary">
+                Account
+              </Th>
+              <Th className="bg-primary text-primary-foreground border-secondary">
+                Remark
+              </Th>
+              <Th className="bg-primary text-primary-foreground border-secondary">
+                Debit
+              </Th>
+              <Th className="bg-primary text-primary-foreground border-secondary">
+                Credit
+              </Th>
             </tr>
           </thead>
           <tbody>
@@ -152,10 +190,10 @@ const JournalDisplayTable = ({
                       {entry.description}
                     </Td>
                     <Td className="text-center font-bold">
-                      {formatMoney(entry.amount)}
+                      {formatMoney(getTotal(entry.journalRow))}
                     </Td>
                     <Td className="text-center font-bold">
-                      {formatMoney(entry.amount)}
+                      {formatMoney(getTotal(entry.journalRow))}
                     </Td>
                   </tr>
                 </React.Fragment>
@@ -168,7 +206,12 @@ const JournalDisplayTable = ({
         <Button disabled={isNaN(selectedRow)} onClick={handleDeteRow}>
           Delete Line
         </Button>
-        <Button onClick={endAccountingDay}>End Accounting Day</Button>
+        <Button onClick={handleOpenDialog}>End Accounting Day</Button>
+        <ConfirmationDialog
+          isOpen={isDialogOpen}
+          onClose={handleCloseDialog}
+          onConfirm={handleConfirmAction}
+        />
       </div>
     </div>
   );

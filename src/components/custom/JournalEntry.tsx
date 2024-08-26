@@ -222,6 +222,7 @@ const JournalEntry = ({
         <Button
           onClick={handleRemoveLine}
           disabled={transactionData.length <= 2}
+          variant="destructive"
         >
           Remove Line
         </Button>

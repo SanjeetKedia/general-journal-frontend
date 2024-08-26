@@ -118,22 +118,22 @@ const Ledger = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
                     Date
                   </TableHead>
-                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
                     Description
                   </TableHead>
-                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
                     Remark
                   </TableHead>
-                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
                     In
                   </TableHead>
-                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
                     Out
                   </TableHead>
-                  <TableHead className="text-center border bg-primary text-black font-bold text-xl">
+                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
                     Balance
                   </TableHead>
                 </TableRow>

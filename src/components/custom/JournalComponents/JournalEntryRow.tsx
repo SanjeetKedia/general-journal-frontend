@@ -14,7 +14,7 @@ const NumInput = ({
 }) => {
   return (
     <input
-      className="bg-transparent h-full w-full absolute inset-0 px-2 py-1 text-right"
+      className="bg-transparent h-full w-full absolute inset-0 px-2 py-1 text-right outline-primary"
       value={formatMoney(value)}
       onChange={onChange}
     />
@@ -30,7 +30,7 @@ const Input = ({
 }) => {
   return (
     <input
-      className="bg-transparent h-full w-full absolute inset-0 px-2 py-1"
+      className="bg-transparent h-full w-full absolute inset-0 px-2 py-1 outline-primary"
       value={value}
       onChange={onChange}
     />
@@ -111,7 +111,7 @@ const JournalEntryRow = forwardRef<HTMLButtonElement, JournalEntryRowProps>(
           <Toggle
             pressed={data.isDebit}
             onPressedChange={handleToggleChange}
-            className="w-full h-full absolute inset-0 text-black data-[state='on']:bg-gradient-to-br from-primary to-secondary"
+            className="w-full h-full absolute inset-0 text-black data-[state='on']:bg-gradient-to-br from-primary to-primary-foreground"
           />
         </Td>
       </tr>
