@@ -14,7 +14,7 @@ const NumInput = ({
 }) => {
   return (
     <input
-      className="bg-transparent h-full w-full absolute inset-0 px-2 py-1 text-right outline-primary"
+      className="bg-transparent h-full w-full absolute inset-0 px-2 py-1 text-right"
       value={formatMoney(value)}
       onChange={onChange}
     />
@@ -30,7 +30,7 @@ const Input = ({
 }) => {
   return (
     <input
-      className="bg-transparent h-full w-full absolute inset-0 px-2 py-1 outline-primary"
+      className="bg-transparent h-full w-full absolute inset-0 px-2 py-1"
       value={value}
       onChange={onChange}
     />

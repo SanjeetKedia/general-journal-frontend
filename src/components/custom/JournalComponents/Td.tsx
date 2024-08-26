@@ -13,7 +13,10 @@ const Td = ({
 }>) => {
   return (
     <td
-      className={cn("border border-secondary font-thin", className)}
+      className={cn(
+        "border border-secondary font-thin outline-none",
+        className
+      )}
       rowSpan={rowSpan}
       colSpan={colSpan}
     >
