@@ -1,5 +1,5 @@
 import { Separator } from "@radix-ui/react-separator";
-import { Menu, SidebarCloseIcon, SidebarOpenIcon } from "lucide-react";
+import { SidebarOpenIcon } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
