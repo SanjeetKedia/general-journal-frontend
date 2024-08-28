@@ -95,9 +95,12 @@ const TrialBalance = () => {
       {/* Content Display */}
       <div className="min-w-[75%] flex-1 pt-5 flex flex-col items-center gap-5">
         <h1 className="text-center font-bold text-4xl">
-          Trial Balance at date
+          Trial Balance at date -{" "}
+          <span className="text-primary">
+            {new Date(selectedDate.date).toLocaleDateString()}
+          </span>
         </h1>
-        <div className="w-fit">
+        <div className="w-fit overflow-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -116,11 +119,11 @@ const TrialBalance = () => {
               {displayData.map((data, i) => {
                 return (
                   <TableRow key={i}>
-                    <TableCell>{data.name}</TableCell>
-                    <TableCell>
+                    <TableCell className="border">{data.name}</TableCell>
+                    <TableCell className="text-right border">
                       {data.total >= 0 ? formatMoney(data.total) : ""}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-right border">
                       {data.total < 0 ? formatMoney(data.total) : ""}
                     </TableCell>
                   </TableRow>
@@ -129,9 +132,13 @@ const TrialBalance = () => {
             </TableBody>
             <TableFooter>
               <TableRow>
-                <TableCell>SUM</TableCell>
-                <TableCell>{formatMoney(totals.debit)}</TableCell>
-                <TableCell>{formatMoney(totals.credit)}</TableCell>
+                <TableCell className="text-xl">SUM</TableCell>
+                <TableCell className="text-center text-xl">
+                  {formatMoney(totals.debit)}
+                </TableCell>
+                <TableCell className="text-center text-xl">
+                  {formatMoney(totals.credit * -1)}
+                </TableCell>
               </TableRow>
             </TableFooter>
           </Table>
