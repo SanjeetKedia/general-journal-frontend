@@ -67,7 +67,6 @@ export const getStartOfMonth = () => {
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  console.log(startOfMonth);
   return startOfMonth;
 };
 
