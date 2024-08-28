@@ -15,6 +15,7 @@ import {
   formatMoney,
   getAccounts,
   getStartOfDay,
+  getStartOfMonth,
 } from "@/lib/helpers";
 import { Account } from "@/lib/types";
 import { Separator } from "@radix-ui/react-separator";
@@ -26,7 +27,7 @@ const Ledger = () => {
   const [accounts, setAccounts] = useState<Account[]>();
   const [accountId, setAccountId] = useState(NaN);
   const [dateRange, setDateRange] = useState<DateRange>({
-    from: getStartOfDay(),
+    from: getStartOfMonth(),
     to: getStartOfDay(),
   });
   const [displayData, setDisplayData] = useState<

@@ -63,6 +63,14 @@ export const getStartOfDay = (day?: Date) => {
   return startOfDay;
 };
 
+export const getStartOfMonth = () => {
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  console.log(startOfMonth);
+  return startOfMonth;
+};
+
 export const getAllAccountingDays = async () => {
   const response = await apiClient
     .get<BackendResponse<AccountingDay[]>>(
