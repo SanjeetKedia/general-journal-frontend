@@ -11,6 +11,7 @@ const routes = [
     text: "Account",
   },
   { route: "/ledger", text: "Ledger" },
+  { route: "/trial-balance", text: "Trial Balance" },
 ];
 
 function App() {

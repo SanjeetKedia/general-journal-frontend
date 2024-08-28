@@ -58,8 +58,6 @@ const Ledger = () => {
   const handleDateChange = (e: DateRange | undefined) => {
     if (!e) return;
 
-    console.log(e.from, e.to);
-
     setDateRange(e);
   };
 

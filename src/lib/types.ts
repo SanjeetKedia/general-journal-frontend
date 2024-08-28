@@ -56,3 +56,8 @@ export type JournalDataDisplay = {
     remark: string;
   }[];
 }[];
+
+export type BackendResponse<T> = {
+  message: string;
+  data: T;
+};

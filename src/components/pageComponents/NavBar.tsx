@@ -14,7 +14,7 @@ const NavBar = ({ routes }: { routes: { route: string; text: string }[] }) => {
   return (
     <>
       {isCollasped ? (
-        <nav className="flex-flex-col pt-5 w-auto transition-all duration-500 ease-in-out h-screen">
+        <nav className="flex-flex-col pt-5 w-auto transition-all duration-500 ease-in-out h-screen overflow-hidden">
           <SidebarOpenIcon
             className="cursor-pointer hover:bg-secondary h-full mt-2 mr-2 text-primary"
             onClick={toggleMenu}

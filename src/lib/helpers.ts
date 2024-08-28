@@ -1,4 +1,4 @@
-import { Account } from "./types";
+import { Account, AccountingDay, BackendResponse } from "./types";
 import apiClient from "./axiosInstance";
 
 export const findAccountName = (
@@ -61,4 +61,19 @@ export const getStartOfDay = (day?: Date) => {
   const startOfDay = new Date();
   startOfDay.setHours(0, 0, 0, 0);
   return startOfDay;
+};
+
+export const getAllAccountingDays = async () => {
+  const response = await apiClient
+    .get<BackendResponse<AccountingDay[]>>(
+      "/api/accountingDay/getAllAccountingDays"
+    )
+    .then((resp) => {
+      return resp.data;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+  return response;
 };
