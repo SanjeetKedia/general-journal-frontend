@@ -67,7 +67,7 @@ const OldJournal = () => {
             Accounting Day: {new Date(selectedDate.date).toLocaleDateString()}
           </h1>
           <div className="h-full pb-20 flex justify-center">
-            <ScrollArea className="h-full w-full max-w-screen-lg">
+            <ScrollArea className="h-full w-full max-w-screen-lg pr-5">
               <DoubleEntryTable>
                 {displayData.map((transaction) => {
                   return (
