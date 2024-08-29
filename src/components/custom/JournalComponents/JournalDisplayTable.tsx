@@ -119,7 +119,7 @@ const JournalDisplayTable = ({
       <h1 className="text-center text-2xl p-3 grid-rows-subgrid col-span-5">
         General Journal
       </h1>
-      <ScrollArea className="col-span-4 w-full px-7">
+      <ScrollArea className="col-span-4 w-full px-7 pb-20">
         <table className="w-full">
           <thead>
             <tr className="bg-secondary">
@@ -203,7 +203,11 @@ const JournalDisplayTable = ({
         </table>
       </ScrollArea>
       <div className="flex flex-col align-center px-6 gap-2">
-        <Button disabled={isNaN(selectedRow)} onClick={handleDeteRow}>
+        <Button
+          variant="destructive"
+          disabled={isNaN(selectedRow)}
+          onClick={handleDeteRow}
+        >
           Delete Line
         </Button>
         <Button onClick={handleOpenDialog}>End Accounting Day</Button>

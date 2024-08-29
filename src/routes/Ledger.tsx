@@ -1,10 +1,12 @@
 import AccountSelect from "@/components/custom/JournalComponents/AccountSelect";
 import { Button } from "@/components/ui/button";
 import { CalenderInput } from "@/components/ui/calender-input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -99,11 +101,23 @@ const Ledger = () => {
     setDisplayData(data);
   };
 
+  const totals = displayData.reduce(
+    (acc, cur) => {
+      if (cur.amount >= 0) {
+        acc.totalDebit += cur.amount;
+      } else {
+        acc.totalCredit += cur.amount;
+      }
+      return acc;
+    },
+    { totalDebit: 0, totalCredit: 0 }
+  );
+
   return (
     <div className="flex-1 flex">
       {accounts ? (
         <>
-          <div className="flex-1 flex flex-col py-3 gap-5">
+          <div className="flex-1 flex flex-col py-3 gap-5 items-center">
             <div className="flex flex-col w-fit mx-auto">
               <p className="mx-auto font-bold text-2xl">
                 {findAccountName(accountId, accounts) || "Select an account"}
@@ -114,60 +128,88 @@ const Ledger = () => {
                 {dateRange.from?.toDateString()}
               </p>
             </div>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
-                    Date
-                  </TableHead>
-                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
-                    Description
-                  </TableHead>
-                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
-                    Remark
-                  </TableHead>
-                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
-                    In
-                  </TableHead>
-                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
-                    Out
-                  </TableHead>
-                  <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl">
-                    Balance
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {displayData.length > 0 ? (
-                  displayData.map((row) => {
-                    return (
-                      <TableRow key={row.id}>
-                        <TableCell className="border">
-                          {row.date
-                            ? new Date(row.date).toLocaleDateString()
-                            : ""}
-                        </TableCell>
-                        <TableCell className="border">
-                          {row.description}
-                        </TableCell>
-                        <TableCell className="border">{row.remark}</TableCell>
-                        <TableCell className="border text-right">
-                          {row.amount >= 0 ? formatMoney(row.amount) : ""}
-                        </TableCell>
-                        <TableCell className="border text-right">
-                          {row.amount < 0 ? formatMoney(row.amount) : ""}
-                        </TableCell>
-                        <TableCell className="border text-right">
-                          {formatMoney(row.balance)}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                ) : (
-                  <TableRow></TableRow>
-                )}
-              </TableBody>
-            </Table>
+            <ScrollArea className="h-min px-4 max-w-screen-xl w-fit min-w-[1000px]">
+              {displayData.length > 0 ? (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl w-min">
+                        Date
+                      </TableHead>
+                      <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl w-3/12">
+                        Description
+                      </TableHead>
+                      <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl w-1/12">
+                        Remark
+                      </TableHead>
+                      <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl w-2/12">
+                        Debit
+                      </TableHead>
+                      <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl w-2/12">
+                        Credit
+                      </TableHead>
+                      <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl w-3/12">
+                        Balance
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {displayData.length > 0 ? (
+                      displayData.map((row) => {
+                        return (
+                          <TableRow key={row.id}>
+                            <TableCell className="border">
+                              {row.date
+                                ? new Date(row.date).toLocaleDateString()
+                                : ""}
+                            </TableCell>
+                            <TableCell className="border">
+                              {row.description}
+                            </TableCell>
+                            <TableCell className="border">
+                              {row.remark}
+                            </TableCell>
+                            <TableCell className="border text-right">
+                              {row.amount >= 0 ? formatMoney(row.amount) : ""}
+                            </TableCell>
+                            <TableCell className="border text-right">
+                              {row.amount < 0
+                                ? formatMoney(row.amount * -1)
+                                : ""}
+                            </TableCell>
+                            <TableCell className="border text-right">
+                              {formatMoney(row.balance)}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })
+                    ) : (
+                      <TableRow></TableRow>
+                    )}
+                  </TableBody>
+                  <TableFooter>
+                    <TableRow className="text-xl">
+                      <TableCell className="border text-right" colSpan={3}>
+                        Totals
+                      </TableCell>
+                      <TableCell className="border text-right">
+                        {formatMoney(totals.totalDebit)}
+                      </TableCell>
+                      <TableCell className="border text-right">
+                        {formatMoney(totals.totalCredit * -1)}
+                      </TableCell>
+                      <TableCell className="border text-right">
+                        {formatMoney(
+                          displayData[displayData.length - 1].balance
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  </TableFooter>
+                </Table>
+              ) : (
+                <></>
+              )}
+            </ScrollArea>
           </div>
           <Separator orientation="vertical" className="border my-3 rounded" />
           <div className="flex flex-col w-1/12 min-w-fit px-5 py-3 gap-3">

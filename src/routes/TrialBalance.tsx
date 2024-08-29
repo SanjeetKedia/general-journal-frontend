@@ -1,5 +1,6 @@
 import AccountDaySelect from "@/components/custom/AccountDaySelect";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -93,7 +94,7 @@ const TrialBalance = () => {
             {new Date(selectedDate.date).toLocaleDateString()}
           </span>
         </h1>
-        <div className="w-fit overflow-auto">
+        <ScrollArea className="px-5">
           <Table>
             <TableHeader>
               <TableRow>
@@ -135,7 +136,7 @@ const TrialBalance = () => {
               </TableRow>
             </TableFooter>
           </Table>
-        </div>
+        </ScrollArea>
       </div>
       <Separator orientation="vertical" />
       {/* Controls */}

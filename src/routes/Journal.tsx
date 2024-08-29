@@ -7,6 +7,7 @@ import { AccountingDay, JournalDataDisplay } from "@/lib/types";
 import apiClient from "@/lib/axiosInstance";
 import { useEffect, useState } from "react";
 import JournalNavBar from "@/components/pageComponents/JournalNavBar";
+import { Loader } from "lucide-react";
 
 const defaultAccountingDay = {
   id: NaN,
@@ -17,7 +18,7 @@ const defaultAccountingDay = {
 const Journal = () => {
   const [accountingDay, setAccoutingDay] =
     useState<AccountingDay>(defaultAccountingDay);
-  const [dayLoad, setDayLoad] = useState<boolean>(false);
+  const [dayLoad, setDayLoad] = useState<boolean | null>(null);
   const [journalData, setJournalData] = useState<JournalDataDisplay>();
 
   const getAccountingDay = async () => {
@@ -61,6 +62,10 @@ const Journal = () => {
   const handleNewAccountingDay = () => {
     getAccountingDay();
   };
+
+  if (dayLoad === null) {
+    return <Loader />;
+  }
 
   return (
     <div className="w-full max-h-screen overflow-hidden">

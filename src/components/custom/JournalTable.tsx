@@ -78,7 +78,7 @@ export const DoubleEntryRow = ({
               {row.amount >= 0 ? formatMoney(row.amount) : ""}
             </TableCell>
             <TableCell className="border text-right">
-              {row.amount < 0 ? formatMoney(row.amount) : ""}
+              {row.amount < 0 ? formatMoney(row.amount * -1) : ""}
             </TableCell>
           </TableRow>
         );
