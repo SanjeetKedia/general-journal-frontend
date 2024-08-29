@@ -11,7 +11,10 @@ import { cn } from "@/lib/utils";
 import { JournalTransaction } from "@/lib/types";
 import { formatMoney } from "@/lib/helpers";
 
-export const DoubleEntryTable = ({ children }: PropsWithChildren) => {
+export const DoubleEntryTable = ({
+  children,
+  className,
+}: PropsWithChildren<{ className?: string }>) => {
   const Thead = ({
     className,
     children,
@@ -31,7 +34,7 @@ export const DoubleEntryTable = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <Table className="mt-4 min-w-fit">
+    <Table className={cn("mt-4 min-w-fit", className)}>
       <TableHeader>
         <TableRow>
           <Thead className="w-fit">ID</Thead>
@@ -71,7 +74,7 @@ export const DoubleEntryRow = ({
       </TableRow>
       {transaction.journalRow.map((row) => {
         return (
-          <TableRow>
+          <TableRow key={row.id}>
             <TableCell className="border">{row.accountName}</TableCell>
             <TableCell className="border">{row.remark}</TableCell>
             <TableCell className="border text-right">

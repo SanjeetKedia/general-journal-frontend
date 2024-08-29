@@ -1,4 +1,5 @@
 import AccountSelect from "@/components/custom/JournalComponents/AccountSelect";
+import JournalTransactionDialog from "@/components/custom/JournalComponents/JournalTransactionDialog";
 import { Button } from "@/components/ui/button";
 import { CalenderInput } from "@/components/ui/calender-input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -19,11 +20,22 @@ import {
   getStartOfDay,
   getStartOfMonth,
 } from "@/lib/helpers";
-import { Account } from "@/lib/types";
+import { Account, JournalTransaction } from "@/lib/types";
 import { Separator } from "@radix-ui/react-separator";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
+
+type DisplayData = {
+  balance: number;
+  id: number;
+  journalId: number;
+  amount: number;
+  remark: string;
+  description: string;
+  accountingDay: number;
+  date: string | undefined;
+};
 
 const Ledger = () => {
   const [accounts, setAccounts] = useState<Account[]>();
@@ -32,18 +44,12 @@ const Ledger = () => {
     from: getStartOfMonth(),
     to: getStartOfDay(),
   });
-  const [displayData, setDisplayData] = useState<
-    {
-      balance: number;
-      id: number;
-      journalId: number;
-      amount: number;
-      remark: string;
-      description: string;
-      accountingDay: number;
-      date: string | undefined;
-    }[]
-  >([]);
+  const [displayData, setDisplayData] = useState<DisplayData[]>([]);
+  const [selectedRow, setSelectedRow] = useState<DisplayData | null>(null);
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  const [dialogContent, setDialogContent] = useState<JournalTransaction | null>(
+    null
+  );
 
   useEffect(() => {
     getAccounts().then((data) => {
@@ -101,6 +107,36 @@ const Ledger = () => {
     setDisplayData(data);
   };
 
+  const handleChangeSelect = (id: number) => {
+    const object = displayData.find((row) => row.id == id);
+
+    if (!object) {
+      return alert("Error");
+    }
+
+    if (!selectedRow) return setSelectedRow(object);
+    if (selectedRow.id == id) return setSelectedRow(null);
+
+    setSelectedRow(object);
+  };
+
+  const toggleDialog = () => setDialogIsOpen(!dialogIsOpen);
+
+  const closeDialog = () => setDialogIsOpen(false);
+
+  const handleSeeJournalEntry = async () => {
+    if (!selectedRow) return alert("Please select a row");
+
+    const response = await apiClient.post("/api/journal/getTransaction", {
+      id: selectedRow.id,
+    });
+
+    const data: JournalTransaction = response.data.data;
+
+    setDialogContent(data);
+    toggleDialog();
+  };
+
   const totals = displayData.reduce(
     (acc, cur) => {
       if (cur.amount >= 0) {
@@ -128,7 +164,7 @@ const Ledger = () => {
                 {dateRange.from?.toDateString()}
               </p>
             </div>
-            <ScrollArea className="h-min px-4 max-w-screen-xl w-fit min-w-[1000px]">
+            <ScrollArea className="h-min px-4 flex-1 w-full max-w-screen-xl">
               {displayData.length > 0 ? (
                 <Table>
                   <TableHeader>
@@ -139,7 +175,7 @@ const Ledger = () => {
                       <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl w-3/12">
                         Description
                       </TableHead>
-                      <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl w-1/12">
+                      <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl w-2/12">
                         Remark
                       </TableHead>
                       <TableHead className="text-center border bg-primary text-primary-foreground font-bold text-xl w-2/12">
@@ -157,7 +193,15 @@ const Ledger = () => {
                     {displayData.length > 0 ? (
                       displayData.map((row) => {
                         return (
-                          <TableRow key={row.id}>
+                          <TableRow
+                            key={row.id}
+                            onClick={() => handleChangeSelect(row.id)}
+                            className={
+                              selectedRow?.id === row.id
+                                ? "bg-secondary cursor-pointer"
+                                : "cursor-pointer"
+                            }
+                          >
                             <TableCell className="border">
                               {row.date
                                 ? new Date(row.date).toLocaleDateString()
@@ -220,6 +264,18 @@ const Ledger = () => {
             />
             <CalenderInput date={dateRange} onDateChange={handleDateChange} />
             <Button onClick={handleGetData}>Get Data</Button>
+
+            <Button
+              disabled={selectedRow == null}
+              onClick={handleSeeJournalEntry}
+            >
+              See Journal Data
+            </Button>
+            <JournalTransactionDialog
+              isOpen={dialogIsOpen}
+              closeDialog={closeDialog}
+              transactionToShow={dialogContent}
+            />
           </div>
         </>
       ) : (
