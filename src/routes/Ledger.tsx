@@ -269,7 +269,7 @@ const Ledger = () => {
               disabled={selectedRow == null}
               onClick={handleSeeJournalEntry}
             >
-              See Journal Data
+              View Transaction
             </Button>
             <JournalTransactionDialog
               isOpen={dialogIsOpen}
