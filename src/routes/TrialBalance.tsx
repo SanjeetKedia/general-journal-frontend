@@ -1,3 +1,4 @@
+import AccountDaySelect from "@/components/custom/AccountDaySelect";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -51,7 +52,7 @@ const TrialBalance = () => {
   }
 
   // State functions
-  const updateDateChange = (value: string) => {
+  const handleUpdateDateChange = (value: string) => {
     const selectedAccountingDay = accountingDays.find(
       (day) => day.id == +value
     );
@@ -148,22 +149,11 @@ const TrialBalance = () => {
       {/* Controls */}
       <div className="w-fit px-4 flex flex-col gap-4 pt-5 min-w-[15rem]">
         <h1 className="text-center text-2xl font-bold">Controls</h1>
-        <Select value={"" + selectedDate.id} onValueChange={updateDateChange}>
-          <SelectTrigger>
-            <SelectValue placeholder="Choose an accounting day" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {accountingDays.map((day) => {
-                return (
-                  <SelectItem key={day.id} value={day.id + ""}>
-                    {new Date(day.date).toLocaleDateString()}
-                  </SelectItem>
-                );
-              })}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <AccountDaySelect
+          accountingDays={accountingDays}
+          selectedDate={selectedDate}
+          updateDateChange={handleUpdateDateChange}
+        />
         <Button onClick={handleGetTrialBalance}>Get Trial Balance</Button>
       </div>
     </div>

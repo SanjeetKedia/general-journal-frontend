@@ -57,6 +57,19 @@ export type JournalDataDisplay = {
   }[];
 }[];
 
+export type JournalTransaction = {
+  journalRow: {
+    accountName: string;
+    id: number;
+    accountId: number;
+    amount: number;
+    remark: string;
+  }[];
+  id: number;
+  description: string;
+  accountingDay: number;
+};
+
 export type BackendResponse<T> = {
   message: string;
   data: T;

@@ -9,6 +9,7 @@ import { ThemeProvider } from "./components/themeProvider.tsx";
 import { Toaster } from "./components/ui/toaster.tsx";
 import Ledger from "./routes/Ledger.tsx";
 import TrialBalance from "./routes/TrialBalance.tsx";
+import OldJournal from "./routes/OldJournal.tsx";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "trial-balance",
         element: <TrialBalance />,
+      },
+      {
+        path: "/journal/old",
+        element: <OldJournal />,
       },
     ],
   },

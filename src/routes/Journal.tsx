@@ -6,7 +6,7 @@ import { formatStringToDate } from "@/lib/helpers";
 import { AccountingDay, JournalDataDisplay } from "@/lib/types";
 import apiClient from "@/lib/axiosInstance";
 import { useEffect, useState } from "react";
-// import { Button } from "@/components/ui/button";
+import JournalNavBar from "@/components/pageComponents/JournalNavBar";
 
 const defaultAccountingDay = {
   id: NaN,
@@ -63,7 +63,9 @@ const Journal = () => {
   };
 
   return (
-    <div className="w-full max-h-full">
+    <div className="w-full max-h-screen overflow-hidden">
+      <JournalNavBar />
+      <Separator orientation="horizontal" />
       {dayLoad && journalData ? (
         <div className="flex h-full">
           <div className="w-1/2 flex flex-col items-center">
