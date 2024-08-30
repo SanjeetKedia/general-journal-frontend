@@ -216,6 +216,7 @@ const JournalDisplayTable = ({
           onClose={handleCloseDialog}
           onConfirm={handleConfirmAction}
         />
+        <Button onClick={refresh}>Refresh</Button>
       </div>
     </div>
   );
