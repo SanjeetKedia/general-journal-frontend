@@ -149,7 +149,7 @@ const JournalDisplayTable = ({
                       handleRowClicked(entry.id);
                     }}
                     key={i}
-                    className="data-[isselected=true]:bg-primary"
+                    className="data-[isselected=true]:bg-destructive data-[isselected=true]:text-destructive-foreground data-[isselected=true]:font-bold transition-colors duration-100 ease-in-out cursor-pointer"
                     data-isselected={selectedRow == entry.id}
                   >
                     <Td
