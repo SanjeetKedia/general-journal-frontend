@@ -118,7 +118,7 @@ const TrialBalance = () => {
                       {data.total >= 0 ? formatMoney(data.total) : ""}
                     </TableCell>
                     <TableCell className="text-right border">
-                      {data.total < 0 ? formatMoney(data.total) : ""}
+                      {data.total < 0 ? formatMoney(data.total * -1) : ""}
                     </TableCell>
                   </TableRow>
                 );
