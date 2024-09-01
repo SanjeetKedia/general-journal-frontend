@@ -125,7 +125,7 @@ const TrialBalance = () => {
               })}
             </TableBody>
             <TableFooter>
-              <TableRow>
+              <TableRow className="border">
                 <TableCell className="text-xl">SUM</TableCell>
                 <TableCell className="text-center text-xl">
                   {formatMoney(totals.debit)}

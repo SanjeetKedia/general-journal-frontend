@@ -115,11 +115,11 @@ const JournalDisplayTable = ({
   };
 
   return (
-    <div className="grid grid-cols-5 grid-rows-[auto_1fr_auto] flex-auto max-h-screen">
+    <div className="grid grid-cols-5 grid-rows-[auto_1fr_auto] flex-auto max-h-screen pb-14 ">
       <h1 className="text-center text-2xl p-3 grid-rows-subgrid col-span-5">
         General Journal
       </h1>
-      <ScrollArea className="col-span-4 w-full px-7 pb-20">
+      <ScrollArea className="col-span-4 w-full px-7">
         <table className="w-full">
           <thead>
             <tr className="bg-secondary">
@@ -140,6 +140,486 @@ const JournalDisplayTable = ({
               </Th>
             </tr>
           </thead>
+          <tbody>
+            {journalData.map((entry, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <tr
+                    onClick={() => {
+                      handleRowClicked(entry.id);
+                    }}
+                    key={i}
+                    className="data-[isselected=true]:bg-destructive data-[isselected=true]:text-destructive-foreground data-[isselected=true]:font-bold transition-colors duration-100 ease-in-out cursor-pointer"
+                    data-isselected={selectedRow == entry.id}
+                  >
+                    <Td
+                      className="text-center"
+                      rowSpan={entry.journalRow.length + 1}
+                    >
+                      {entry.id}
+                    </Td>
+                  </tr>
+                  {entry.journalRow.map((row, i) => {
+                    return (
+                      <tr key={i}>
+                        <Td>
+                          {accounts && findAccountName(row.accountId, accounts)}
+                        </Td>
+                        <Td>{row.remark}</Td>
+                        {row.amount < 0 ? (
+                          <>
+                            <Td></Td>
+                            <Td className="text-right">
+                              {formatMoney(row.amount * -1)}
+                            </Td>
+                          </>
+                        ) : (
+                          <>
+                            <Td className="text-right">
+                              {formatMoney(row.amount)}
+                            </Td>
+                            <Td></Td>
+                          </>
+                        )}
+                      </tr>
+                    );
+                  })}
+                  <tr className="bg-secondary">
+                    <Td className="">Desc:</Td>
+                    <Td colSpan={2} className="">
+                      {entry.description}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+          <tbody>
+            {journalData.map((entry, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <tr
+                    onClick={() => {
+                      handleRowClicked(entry.id);
+                    }}
+                    key={i}
+                    className="data-[isselected=true]:bg-destructive data-[isselected=true]:text-destructive-foreground data-[isselected=true]:font-bold transition-colors duration-100 ease-in-out cursor-pointer"
+                    data-isselected={selectedRow == entry.id}
+                  >
+                    <Td
+                      className="text-center"
+                      rowSpan={entry.journalRow.length + 1}
+                    >
+                      {entry.id}
+                    </Td>
+                  </tr>
+                  {entry.journalRow.map((row, i) => {
+                    return (
+                      <tr key={i}>
+                        <Td>
+                          {accounts && findAccountName(row.accountId, accounts)}
+                        </Td>
+                        <Td>{row.remark}</Td>
+                        {row.amount < 0 ? (
+                          <>
+                            <Td></Td>
+                            <Td className="text-right">
+                              {formatMoney(row.amount * -1)}
+                            </Td>
+                          </>
+                        ) : (
+                          <>
+                            <Td className="text-right">
+                              {formatMoney(row.amount)}
+                            </Td>
+                            <Td></Td>
+                          </>
+                        )}
+                      </tr>
+                    );
+                  })}
+                  <tr className="bg-secondary">
+                    <Td className="">Desc:</Td>
+                    <Td colSpan={2} className="">
+                      {entry.description}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+          <tbody>
+            {journalData.map((entry, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <tr
+                    onClick={() => {
+                      handleRowClicked(entry.id);
+                    }}
+                    key={i}
+                    className="data-[isselected=true]:bg-destructive data-[isselected=true]:text-destructive-foreground data-[isselected=true]:font-bold transition-colors duration-100 ease-in-out cursor-pointer"
+                    data-isselected={selectedRow == entry.id}
+                  >
+                    <Td
+                      className="text-center"
+                      rowSpan={entry.journalRow.length + 1}
+                    >
+                      {entry.id}
+                    </Td>
+                  </tr>
+                  {entry.journalRow.map((row, i) => {
+                    return (
+                      <tr key={i}>
+                        <Td>
+                          {accounts && findAccountName(row.accountId, accounts)}
+                        </Td>
+                        <Td>{row.remark}</Td>
+                        {row.amount < 0 ? (
+                          <>
+                            <Td></Td>
+                            <Td className="text-right">
+                              {formatMoney(row.amount * -1)}
+                            </Td>
+                          </>
+                        ) : (
+                          <>
+                            <Td className="text-right">
+                              {formatMoney(row.amount)}
+                            </Td>
+                            <Td></Td>
+                          </>
+                        )}
+                      </tr>
+                    );
+                  })}
+                  <tr className="bg-secondary">
+                    <Td className="">Desc:</Td>
+                    <Td colSpan={2} className="">
+                      {entry.description}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+          <tbody>
+            {journalData.map((entry, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <tr
+                    onClick={() => {
+                      handleRowClicked(entry.id);
+                    }}
+                    key={i}
+                    className="data-[isselected=true]:bg-destructive data-[isselected=true]:text-destructive-foreground data-[isselected=true]:font-bold transition-colors duration-100 ease-in-out cursor-pointer"
+                    data-isselected={selectedRow == entry.id}
+                  >
+                    <Td
+                      className="text-center"
+                      rowSpan={entry.journalRow.length + 1}
+                    >
+                      {entry.id}
+                    </Td>
+                  </tr>
+                  {entry.journalRow.map((row, i) => {
+                    return (
+                      <tr key={i}>
+                        <Td>
+                          {accounts && findAccountName(row.accountId, accounts)}
+                        </Td>
+                        <Td>{row.remark}</Td>
+                        {row.amount < 0 ? (
+                          <>
+                            <Td></Td>
+                            <Td className="text-right">
+                              {formatMoney(row.amount * -1)}
+                            </Td>
+                          </>
+                        ) : (
+                          <>
+                            <Td className="text-right">
+                              {formatMoney(row.amount)}
+                            </Td>
+                            <Td></Td>
+                          </>
+                        )}
+                      </tr>
+                    );
+                  })}
+                  <tr className="bg-secondary">
+                    <Td className="">Desc:</Td>
+                    <Td colSpan={2} className="">
+                      {entry.description}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+          <tbody>
+            {journalData.map((entry, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <tr
+                    onClick={() => {
+                      handleRowClicked(entry.id);
+                    }}
+                    key={i}
+                    className="data-[isselected=true]:bg-destructive data-[isselected=true]:text-destructive-foreground data-[isselected=true]:font-bold transition-colors duration-100 ease-in-out cursor-pointer"
+                    data-isselected={selectedRow == entry.id}
+                  >
+                    <Td
+                      className="text-center"
+                      rowSpan={entry.journalRow.length + 1}
+                    >
+                      {entry.id}
+                    </Td>
+                  </tr>
+                  {entry.journalRow.map((row, i) => {
+                    return (
+                      <tr key={i}>
+                        <Td>
+                          {accounts && findAccountName(row.accountId, accounts)}
+                        </Td>
+                        <Td>{row.remark}</Td>
+                        {row.amount < 0 ? (
+                          <>
+                            <Td></Td>
+                            <Td className="text-right">
+                              {formatMoney(row.amount * -1)}
+                            </Td>
+                          </>
+                        ) : (
+                          <>
+                            <Td className="text-right">
+                              {formatMoney(row.amount)}
+                            </Td>
+                            <Td></Td>
+                          </>
+                        )}
+                      </tr>
+                    );
+                  })}
+                  <tr className="bg-secondary">
+                    <Td className="">Desc:</Td>
+                    <Td colSpan={2} className="">
+                      {entry.description}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+          <tbody>
+            {journalData.map((entry, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <tr
+                    onClick={() => {
+                      handleRowClicked(entry.id);
+                    }}
+                    key={i}
+                    className="data-[isselected=true]:bg-destructive data-[isselected=true]:text-destructive-foreground data-[isselected=true]:font-bold transition-colors duration-100 ease-in-out cursor-pointer"
+                    data-isselected={selectedRow == entry.id}
+                  >
+                    <Td
+                      className="text-center"
+                      rowSpan={entry.journalRow.length + 1}
+                    >
+                      {entry.id}
+                    </Td>
+                  </tr>
+                  {entry.journalRow.map((row, i) => {
+                    return (
+                      <tr key={i}>
+                        <Td>
+                          {accounts && findAccountName(row.accountId, accounts)}
+                        </Td>
+                        <Td>{row.remark}</Td>
+                        {row.amount < 0 ? (
+                          <>
+                            <Td></Td>
+                            <Td className="text-right">
+                              {formatMoney(row.amount * -1)}
+                            </Td>
+                          </>
+                        ) : (
+                          <>
+                            <Td className="text-right">
+                              {formatMoney(row.amount)}
+                            </Td>
+                            <Td></Td>
+                          </>
+                        )}
+                      </tr>
+                    );
+                  })}
+                  <tr className="bg-secondary">
+                    <Td className="">Desc:</Td>
+                    <Td colSpan={2} className="">
+                      {entry.description}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+          <tbody>
+            {journalData.map((entry, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <tr
+                    onClick={() => {
+                      handleRowClicked(entry.id);
+                    }}
+                    key={i}
+                    className="data-[isselected=true]:bg-destructive data-[isselected=true]:text-destructive-foreground data-[isselected=true]:font-bold transition-colors duration-100 ease-in-out cursor-pointer"
+                    data-isselected={selectedRow == entry.id}
+                  >
+                    <Td
+                      className="text-center"
+                      rowSpan={entry.journalRow.length + 1}
+                    >
+                      {entry.id}
+                    </Td>
+                  </tr>
+                  {entry.journalRow.map((row, i) => {
+                    return (
+                      <tr key={i}>
+                        <Td>
+                          {accounts && findAccountName(row.accountId, accounts)}
+                        </Td>
+                        <Td>{row.remark}</Td>
+                        {row.amount < 0 ? (
+                          <>
+                            <Td></Td>
+                            <Td className="text-right">
+                              {formatMoney(row.amount * -1)}
+                            </Td>
+                          </>
+                        ) : (
+                          <>
+                            <Td className="text-right">
+                              {formatMoney(row.amount)}
+                            </Td>
+                            <Td></Td>
+                          </>
+                        )}
+                      </tr>
+                    );
+                  })}
+                  <tr className="bg-secondary">
+                    <Td className="">Desc:</Td>
+                    <Td colSpan={2} className="">
+                      {entry.description}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+          <tbody>
+            {journalData.map((entry, i) => {
+              return (
+                <React.Fragment key={i}>
+                  <tr
+                    onClick={() => {
+                      handleRowClicked(entry.id);
+                    }}
+                    key={i}
+                    className="data-[isselected=true]:bg-destructive data-[isselected=true]:text-destructive-foreground data-[isselected=true]:font-bold transition-colors duration-100 ease-in-out cursor-pointer"
+                    data-isselected={selectedRow == entry.id}
+                  >
+                    <Td
+                      className="text-center"
+                      rowSpan={entry.journalRow.length + 1}
+                    >
+                      {entry.id}
+                    </Td>
+                  </tr>
+                  {entry.journalRow.map((row, i) => {
+                    return (
+                      <tr key={i}>
+                        <Td>
+                          {accounts && findAccountName(row.accountId, accounts)}
+                        </Td>
+                        <Td>{row.remark}</Td>
+                        {row.amount < 0 ? (
+                          <>
+                            <Td></Td>
+                            <Td className="text-right">
+                              {formatMoney(row.amount * -1)}
+                            </Td>
+                          </>
+                        ) : (
+                          <>
+                            <Td className="text-right">
+                              {formatMoney(row.amount)}
+                            </Td>
+                            <Td></Td>
+                          </>
+                        )}
+                      </tr>
+                    );
+                  })}
+                  <tr className="bg-secondary">
+                    <Td className="">Desc:</Td>
+                    <Td colSpan={2} className="">
+                      {entry.description}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                    <Td className="text-center font-bold">
+                      {formatMoney(getTotal(entry.journalRow))}
+                    </Td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
           <tbody>
             {journalData.map((entry, i) => {
               return (
