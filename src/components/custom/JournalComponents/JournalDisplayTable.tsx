@@ -115,12 +115,12 @@ const JournalDisplayTable = ({
   };
 
   return (
-    <div className="grid grid-cols-5 grid-rows-[auto_1fr_auto] flex-auto max-h-screen pb-14 ">
+    <div className="grid grid-cols-5 grid-rows-[auto_1fr_auto] flex-auto max-h-screen pb-14">
       <h1 className="text-center text-2xl p-3 grid-rows-subgrid col-span-5">
         General Journal
       </h1>
-      <ScrollArea className="col-span-4 w-full px-7">
-        <table className="w-full">
+      <ScrollArea className="col-span-4 px-7">
+        <table className="max-w-full">
           <thead>
             <tr className="bg-secondary">
               <Th className="bg-primary text-primary-foreground border-secondary">
@@ -202,7 +202,7 @@ const JournalDisplayTable = ({
           </tbody>
         </table>
       </ScrollArea>
-      <div className="flex flex-col align-center px-6 gap-2">
+      <div className="flex flex-col align-center px-6 gap-2 min-w-fit">
         <Button
           variant="destructive"
           disabled={isNaN(selectedRow)}
