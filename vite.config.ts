@@ -1,4 +1,4 @@
-import path from "path";
+import { resolve } from "path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import legacy from "@vitejs/plugin-legacy";
@@ -12,7 +12,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": resolve(__dirname, "./src"),
     },
   },
   server: {
