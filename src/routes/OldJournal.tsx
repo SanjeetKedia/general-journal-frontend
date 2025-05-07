@@ -149,17 +149,6 @@ const OldJournal = () => {
                 })}
               </DoubleEntryTable>
             </ScrollArea>
-            <PDFViewer>
-              <JournalPDF
-                transactions={displayData}
-                date={new Date(selectedDate.date).toLocaleDateString("de-DE", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "2-digit",
-                })}
-                accountTotals={accountTotals}
-              />
-            </PDFViewer>
           </div>
         </div>
         <Separator orientation="vertical" />
