@@ -187,35 +187,37 @@ const JournalEntry = ({
   );
 
   return (
-    <div className="flex gap-2 overflow-auto w-full justify-center px-2">
-      <table className="flex-1">
-        {/* Headers */}
-        <Thead />
-        {/* Body */}
-        <tbody>
-          {transactionData.map((journalTransaction, key) => {
-            return (
-              <JournalEntryRow
-                key={key}
-                data={journalTransaction}
-                row={key}
-                onAccountChange={handleAccountChange}
-                onToggleChange={handleToggleChange}
-                onAmountChange={handleAmountChange}
-                onRemarkChange={handleRemarkChange}
-                accounts={accounts}
-                ref={key === 0 ? firstInputRef : null}
-              />
-            );
-          })}
-        </tbody>
-        {/* Description */}
-        <TFoot
-          description={entry.description}
-          handleDescriptionChange={handleDescriptionChange}
-          totals={totals}
-        />
-      </table>
+    <div className="flex overflow-auto w-full px-2">
+      <div className="overflow-auto w-full">
+        <table className="flex-1 min-w-fit h-full">
+          {/* Headers */}
+          <Thead />
+          {/* Body */}
+          <tbody>
+            {transactionData.map((journalTransaction, key) => {
+              return (
+                <JournalEntryRow
+                  key={key}
+                  data={journalTransaction}
+                  row={key}
+                  onAccountChange={handleAccountChange}
+                  onToggleChange={handleToggleChange}
+                  onAmountChange={handleAmountChange}
+                  onRemarkChange={handleRemarkChange}
+                  accounts={accounts}
+                  ref={key === 0 ? firstInputRef : null}
+                />
+              );
+            })}
+          </tbody>
+          {/* Description */}
+          <TFoot
+            description={entry.description}
+            handleDescriptionChange={handleDescriptionChange}
+            totals={totals}
+          />
+        </table>
+      </div>
       {/* Buttons */}
       <div className="flex flex-col gap-2">
         <Button onClick={hanldeAddNewRow}>Add Line</Button>
