@@ -1,12 +1,24 @@
 import { formatMoney } from "@/lib/helpers";
 import { AccountTotals, JournalTransaction } from "@/lib/types";
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Font,
+} from "@react-pdf/renderer";
+
+Font.register({
+  family: "MMRText",
+  src: "/fonts/mmrtext.ttf",
+});
 
 const styles = StyleSheet.create({
   page: {
     padding: 20,
     fontSize: 10,
-    fontFamily: "Helvetica",
+    fontFamily: "MMRText",
     position: "relative",
   },
   title: {
