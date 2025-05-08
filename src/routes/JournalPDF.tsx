@@ -11,7 +11,10 @@ import {
 
 Font.register({
   family: "MMRText",
-  src: "/fonts/mmrtext.ttf",
+  fonts: [
+    { src: "/fonts/mmrtext.ttf" },
+    { src: "/fonts/mmrtextb.ttf", fontWeight: 700 },
+  ],
 });
 
 const styles = StyleSheet.create({
