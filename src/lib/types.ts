@@ -74,3 +74,9 @@ export type BackendResponse<T> = {
   message: string;
   data: T;
 };
+
+export type AccountTotals = {
+  accountId: number;
+  accountName: string;
+  total: number;
+};

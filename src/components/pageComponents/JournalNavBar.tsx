@@ -33,7 +33,7 @@ const JournalNavBar = () => {
   };
 
   return (
-    <NavigationMenu className="py-2">
+    <NavigationMenu className="py-2 flex-grow-0">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavLink to="/journal">Journal</NavLink>

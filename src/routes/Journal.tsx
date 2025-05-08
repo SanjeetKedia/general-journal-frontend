@@ -23,13 +23,13 @@ const Journal = () => {
 
   const getAccountingDay = async () => {
     const response = await apiClient.get("/api/accountingDay/getAccountingDay");
-    setDayLoad(response.data.settings.dayLoad);
-    setAccoutingDay(response.data.data);
 
     const journalData = await apiClient.post("/api/journal/getJournalData", {
       accountingDay: response.data.data.id,
     });
     setJournalData(journalData.data.data);
+    setDayLoad(response.data.settings.dayLoad);
+    setAccoutingDay(response.data.data);
   };
 
   useEffect(() => {
@@ -68,12 +68,12 @@ const Journal = () => {
   }
 
   return (
-    <div className="w-full max-h-screen overflow-hidden">
+    <div className="w-full max-h-screen flex flex-col">
       <JournalNavBar />
       <Separator orientation="horizontal" />
       {dayLoad && journalData ? (
-        <div className="flex h-full">
-          <div className="w-1/2 flex flex-col items-center">
+        <div className="flex h-full  overflow-x-auto">
+          <div className="flex-1 flex flex-col items-center">
             <h1 className="my-3 text-2xl">
               <span className="font-bold">
                 Accounting Day {accountingDay.id}
