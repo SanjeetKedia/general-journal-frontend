@@ -12,8 +12,6 @@ import { formatMoney, getAllAccountingDays } from "@/lib/helpers";
 import { AccountingDay, AccountTotals, JournalTransaction } from "@/lib/types";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
-import { JournalPDF } from "./JournalPDF";
-import { PDFViewer } from "@react-pdf/renderer";
 import {
   Table,
   TableBody,
