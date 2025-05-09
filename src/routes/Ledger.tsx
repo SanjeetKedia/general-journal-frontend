@@ -17,7 +17,7 @@ import {
   findAccountName,
   formatMoney,
   getAccounts,
-  getStartOfDay,
+  getEndOfDay,
   getStartOfMonth,
 } from "@/lib/helpers";
 import { Account, JournalTransaction } from "@/lib/types";
@@ -42,7 +42,7 @@ const Ledger = () => {
   const [accountId, setAccountId] = useState(NaN);
   const [dateRange, setDateRange] = useState<DateRange>({
     from: getStartOfMonth(),
-    to: getStartOfDay(),
+    to: getEndOfDay(),
   });
   const [displayData, setDisplayData] = useState<DisplayData[]>([]);
   const [selectedRow, setSelectedRow] = useState<DisplayData | null>(null);
@@ -67,7 +67,13 @@ const Ledger = () => {
   const handleDateChange = (e: DateRange | undefined) => {
     if (!e) return;
 
-    setDateRange(e);
+    const newDate: DateRange = { ...e };
+
+    if (e.to) {
+      newDate.to = getEndOfDay(e.to);
+    }
+
+    setDateRange(newDate);
   };
 
   const handleGetData = async () => {

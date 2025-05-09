@@ -84,3 +84,14 @@ export const getAllAccountingDays = async () => {
 
   return response;
 };
+
+export const getEndOfDay = (day?: Date) => {
+  if (day) {
+    day.setHours(23, 59, 59);
+    return day;
+  }
+
+  const endOfDay = new Date();
+  endOfDay.setHours(23, 59, 59);
+  return endOfDay;
+};
