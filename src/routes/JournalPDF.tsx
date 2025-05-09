@@ -10,10 +10,10 @@ import {
 } from "@react-pdf/renderer";
 
 Font.register({
-  family: "MMRText",
+  family: "Padauk",
   fonts: [
-    { src: "/fonts/mmrtext.ttf" },
-    { src: "/fonts/mmrtextb.ttf", fontWeight: 700 },
+    { src: "/fonts/PadaukBook-Regular.ttf" },
+    { src: "/fonts/PadaukBook-Bold.ttf", fontWeight: 700 },
   ],
 });
 
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   page: {
     padding: 20,
     fontSize: 10,
-    fontFamily: "MMRText",
+    fontFamily: "Padauk",
     position: "relative",
   },
   title: {
@@ -275,6 +275,9 @@ export const JournalPDF = ({ transactions, date, accountTotals }: Props) => (
         }
         fixed // Ensures it appears on every page
       />
+    </Page>
+    <Page size="A4" style={styles.page} wrap>
+      <Text>မြန်မာစာစာသား</Text>
     </Page>
   </Document>
 );

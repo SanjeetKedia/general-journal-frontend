@@ -12,8 +12,6 @@ import { formatMoney, getAllAccountingDays } from "@/lib/helpers";
 import { AccountingDay, AccountTotals, JournalTransaction } from "@/lib/types";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
-import { JournalPDF } from "./JournalPDF";
-import { PDFViewer } from "@react-pdf/renderer";
 import {
   Table,
   TableBody,
@@ -22,7 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { downloadJournalPdf } from "@/lib/pdfUtils";
 
 const OldJournal = () => {
   const [accountingDays, setAccountingDays] = useState<AccountingDay[]>([]);
@@ -114,12 +111,24 @@ const OldJournal = () => {
       year: "2-digit",
     });
 
-    downloadJournalPdf(
-      accountTotals,
-      date,
-      displayData,
-      `Journal Data ${date}`
-    );
+    try {
+      const response = await apiClient.post(
+        "api/journal/getPDF",
+        { date: date, transactions: displayData, accountTotals: accountTotals },
+        { responseType: "arraybuffer" }
+      );
+
+      // Create a Blob from the response
+      const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+
+      // Create a link element to trigger the download
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(pdfBlob);
+      link.download = `journal-${date}.pdf`;
+      link.click();
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
   };
 
   return (
