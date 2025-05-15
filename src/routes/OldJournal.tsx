@@ -119,7 +119,6 @@ const OldJournal = () => {
     const data: JournalTransaction[] = response.data.data;
 
     setData(data);
-    console.log(data, displayData);
   };
 
   // Handle Get PDF
@@ -133,7 +132,7 @@ const OldJournal = () => {
     try {
       const response = await apiClient.post(
         "api/journal/getPDF",
-        { date: date, transactions: displayData, accountTotals: accountTotals },
+        { date: date, transactions: data, accountTotals: accountTotals },
         { responseType: "arraybuffer" }
       );
 
