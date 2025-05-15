@@ -25,7 +25,9 @@ const OldJournal = () => {
   const [accountingDays, setAccountingDays] = useState<AccountingDay[]>([]);
   const [selectedDate, setSelectedDate] = useState<AccountingDay>();
   const [displayData, setDisplayData] = useState<JournalTransaction[]>([]);
+  const [data, setData] = useState<JournalTransaction[]>([]);
   const [accountTotals, setAccountTotals] = useState<AccountTotals[]>([]);
+  const [filterAcconts, setFilterAccounts] = useState<number[]>([]);
 
   // On Startups
   useEffect(() => {
@@ -50,7 +52,7 @@ const OldJournal = () => {
         { accountName: string; total: number }
       >();
 
-      for (const entry of displayData) {
+      for (const entry of data) {
         for (const row of entry.journalRow) {
           const existing = accountsTotalsMap.get(row.accountId);
           if (existing) {
@@ -75,9 +77,25 @@ const OldJournal = () => {
       return accountTotals;
     };
 
+    const filterData = () => {
+      if (filterAcconts.length === 0) {
+        return setDisplayData(data);
+      }
+
+      const filteredData = data.filter((transaction) => {
+        return transaction.journalRow.some((row) =>
+          filterAcconts.includes(row.accountId)
+        );
+      });
+
+      setDisplayData(filteredData);
+    };
+
+    filterData();
+
     const array = getAccountIncrease();
     setAccountTotals(array);
-  }, [displayData]);
+  }, [data, filterAcconts]);
 
   if (!selectedDate) {
     return <Loader />;
@@ -100,7 +118,8 @@ const OldJournal = () => {
 
     const data: JournalTransaction[] = response.data.data;
 
-    setDisplayData(data);
+    setData(data);
+    console.log(data, displayData);
   };
 
   // Handle Get PDF
@@ -128,6 +147,21 @@ const OldJournal = () => {
       link.click();
     } catch (error) {
       console.error("Error generating PDF:", error);
+    }
+  };
+
+  const hanldeSelectFilterAccount = (accountId: number) => {
+    const isIndex = filterAcconts.findIndex((num) => num == accountId);
+    if (isIndex === -1) {
+      setFilterAccounts((prev) => {
+        return [...prev, accountId];
+      });
+    } else {
+      setFilterAccounts((prev) => {
+        const newArr = [...prev];
+        newArr.splice(isIndex, 1);
+        return newArr;
+      });
     }
   };
 
@@ -185,7 +219,16 @@ const OldJournal = () => {
             <TableBody>
               {accountTotals.map((account) => {
                 return (
-                  <TableRow key={account.accountId}>
+                  <TableRow
+                    key={account.accountId}
+                    onClick={() => hanldeSelectFilterAccount(account.accountId)}
+                    data-state={
+                      filterAcconts.find((num) => num == account.accountId)
+                        ? "selected"
+                        : ""
+                    }
+                    className="cursor-pointer"
+                  >
                     <TableCell>{account.accountName}</TableCell>
                     <TableCell>
                       {account.total > 0 && formatMoney(account.total)}
