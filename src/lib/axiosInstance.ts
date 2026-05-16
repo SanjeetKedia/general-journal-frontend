@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const apiURL = import.meta.env.VITE_API_URL /*|| "http://localhost:3000"*/;
+
+// To fix in the future
+const apiURL = "http://192.168.31.240:3000" /*|| "http://localhost:3000"*/;
 
 const apiClient = axios.create({
   baseURL: apiURL,
