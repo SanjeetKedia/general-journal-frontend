@@ -165,12 +165,12 @@ const OldJournal = () => {
   };
 
   return (
-    <div className="w-full max-h-screen overflow-hidden">
+    <div className="flex h-full min-h-0 w-full flex-col overflow-hidden">
       <JournalNavBar />
       <Separator orientation="horizontal" />
-      <div className="flex h-full">
-        <div className="flex-1 py-4 px-4">
-          <h1 className="text-2xl font-bold text-center">
+      <div className="flex min-h-0 flex-1">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col px-4 py-4">
+          <h1 className="shrink-0 text-center text-2xl font-bold">
             Accounting Day:{" "}
             {new Date(selectedDate.date).toLocaleDateString("de-DE", {
               day: "2-digit",
@@ -178,7 +178,7 @@ const OldJournal = () => {
               year: "2-digit",
             })}
           </h1>
-          <div className="h-full pb-20 flex justify-center">
+          <div className="flex min-h-0 flex-1 justify-center pb-4 pt-4">
             <ScrollArea className="h-full w-full max-w-screen-lg pr-5">
               <DoubleEntryTable>
                 {displayData.map((transaction) => {
@@ -193,9 +193,9 @@ const OldJournal = () => {
             </ScrollArea>
           </div>
         </div>
-        <Separator orientation="vertical" />
+        <Separator className="shrink-0" orientation="vertical" />
         {/* Control Side Bar */}
-        <div className="w-fit px-4 flex flex-col gap-4 pt-5 min-w-[15rem]">
+        <div className="flex min-h-0 w-fit min-w-[15rem] flex-col gap-4 overflow-y-auto px-4 pb-4 pt-5">
           <h1 className="text-center text-2xl font-bold">Controls</h1>
           <AccountDaySelect
             accountingDays={accountingDays}
